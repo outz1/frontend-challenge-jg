@@ -1,0 +1,89 @@
+/*
+ * Design tokens extraídos do Figma (docs/FIGMA.md).
+ * Tailwind CSS v4 (@theme) + variáveis consumidas pelo shadcn/ui.
+ * Importar em src/styles/globals.css logo após `@import "tailwindcss";`.
+ */
+
+@theme {
+  /* Fonte */
+  --font-sans: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Paleta do Figma */
+  --color-ink: #140d0a;
+  --color-surface-card: #241612;
+  --color-surface-dark: #38220f;
+  --color-line: #3f2319;
+  --color-line-soft: #55321f;
+  --color-brand: #d28a4c;
+  --color-brand-secondary: #b39463;
+  --color-text-primary: #f7f3ec;
+  --color-text-foreground: #f5f1eb;
+  --color-text-secondary: #cfb28c;
+  --color-text-accent: #e89b55;
+  --color-elevated: #fbfbfb;
+
+  /* Escala tipográfica (tamanho / line-height) */
+  --text-display: 43px;
+  --text-display--line-height: 70px;
+  --text-heading: 24px;
+  --text-heading--line-height: 1;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 20px;
+  --text-body-xl: 18px;
+  --text-body-xl--line-height: 24px;
+  --text-body: 14px;
+  --text-body--line-height: 24px;
+  --text-caption: 12px;
+  --text-caption--line-height: 14px;
+  --text-tiny: 10px;
+  --text-tiny--line-height: 1;
+
+  /* Layout */
+  --container-page: 1200px;
+  --radius-card: 12px; /* conferir no get_design_context */
+
+  /* Shimmer dos skeletons (§8) */
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+}
+
+/* Mapeamento para os tokens semânticos do shadcn/ui */
+:root {
+  --background: var(--color-ink);
+  --foreground: var(--color-text-primary);
+  --card: var(--color-surface-card);
+  --card-foreground: var(--color-text-primary);
+  --popover: var(--color-surface-card);
+  --popover-foreground: var(--color-text-primary);
+  --primary: var(--color-brand);
+  --primary-foreground: var(--color-ink);
+  --secondary: var(--color-surface-dark);
+  --secondary-foreground: var(--color-text-secondary);
+  --muted: var(--color-surface-dark);
+  --muted-foreground: var(--color-text-secondary);
+  --accent: var(--color-surface-dark);
+  --accent-foreground: var(--color-text-accent);
+  --destructive: #e5484d; /* não definido no Figma; validar contraste */
+  --border: var(--color-line);
+  --input: var(--color-line-soft);
+  --ring: var(--color-text-accent);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer {
+    animation: none;
+  }
+}

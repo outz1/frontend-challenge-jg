@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const port = 4173
+/** `E2E_BASE_URL` roda a suíte contra um ambiente já publicado, sem construir nem servir o app local. */
+const external = process.env.E2E_BASE_URL
 
 export default defineConfig({
   testDir: './e2e',
@@ -11,7 +13,7 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   reporter: [['list'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
   use: {
-    baseURL: `http://127.0.0.1:${port}`,
+    baseURL: external ?? `http://127.0.0.1:${port}`,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     serviceWorkers: 'allow',
@@ -25,7 +27,9 @@ export default defineConfig({
     { name: 'chromium-mobile', use: { ...devices['Desktop Chrome'], viewport: { width: 390, height: 844 } } },
   ],
   // Build de demonstração com mocks (§6), servido pelo preview na 4173.
-  webServer: {
+  webServer: external
+    ? undefined
+    : {
     command: 'npm run build && npm run preview -- --host 127.0.0.1',
     url: `http://127.0.0.1:${port}`,
     reuseExistingServer: !process.env.CI,

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { ANA, BRUNO, addToCart, fillCheckout, isMobile, login, reviewOrder, sendOrder, setScenario } from './support'
+import { ANA, BRUNO, addToCart, fillCheckout, isMobile, login, reviewOrder, setScenario } from './support'
 
 async function logout(page: Page, mobile: boolean) {
   if (mobile) {
@@ -70,7 +70,9 @@ test.describe('3. Conta e sessão', () => {
     await fillCheckout(page)
     await reviewOrder(page)
     await setScenario(page, 'session-expired')
-    await sendOrder(page)
+    // A expiração (uso único) chega no envio ou numa consulta em segundo plano que vem antes do clique;
+    // nos dois casos o app leva ao login guardando o contexto.
+    await page.getByRole('button', { name: /enviar pedido|confirmar novos valores|verificar pedido/i }).click({ timeout: 3_000 }).catch(() => undefined)
     await expect(page).toHaveURL(/\/login/)
     await expect(page.getByText(/sessão expirou/i).first()).toBeVisible()
     await page.getByLabel(/e-mail/i).fill(ANA.email)

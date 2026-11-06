@@ -8,7 +8,7 @@ Stack: React 19, TypeScript, Vite, TanStack Router e Query, Axios, Socket.IO (`s
 - Estado do projeto e checklist de entrega: [`docs/ESTADO.md`](docs/ESTADO.md)
 - Decisões: [`docs/decisoes/`](docs/decisoes/)
 - Resultados do Lighthouse: [`lighthouse/RESULTADOS.md`](lighthouse/RESULTADOS.md)
-- URL pública e repositório: ver [Deploy](#deploy)
+- URL pública: https://frontend-challenge-jg.vercel.app (detalhes em [Deploy](#deploy))
 
 ## Setup
 
@@ -150,9 +150,11 @@ Audita início e detalhe (`/nft/nft-001`), mobile e desktop, sobre o `vite previ
 
 `vercel.json` reescreve qualquer rota para `index.html`, então acesso direto e refresh funcionam. O build de produção é o mesmo `npm run build` (com mocks e tempo real simulados no navegador, sem backend).
 
-Na Vercel: importar o repositório, preset **Vite**, comando de build `npm run build`, diretório de saída `dist`, sem variáveis de ambiente. Pela linha de comando: `npx vercel --prod` dentro do repositório.
+Na Vercel: importar o repositório, preset **Vite**, comando de build `npm run build`, diretório de saída `dist`, sem variáveis de ambiente. Pela linha de comando: `npx vercel --prod` dentro do repositório (foi como a versão atual foi publicada).
 
-- **URL pública:** _a preencher com o endereço publicado (ver `docs/ESTADO.md`)_
+Para rodar a suíte Playwright contra a versão publicada, sem construir nada local: `E2E_BASE_URL=https://frontend-challenge-jg.vercel.app npm run test -- --grep-invert "Regressão visual"` (as baselines visuais são do build local).
+
+- **URL pública:** https://frontend-challenge-jg.vercel.app
 - **Repositório:** https://github.com/outz1/frontend-challenge-jg
 
 ## Estrutura

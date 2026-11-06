@@ -12,7 +12,9 @@ Atualizado em 2026-11-06.
 
 **Documentação (2026-11-06):** `README.md` e `ARCHITECTURE.md` completos. Checkout limpo comprovado: um clone novo do repositório rodou `npm ci`, `lint`, `typecheck`, `build` e testes Playwright (detalhe e regressão visual) sem nada fora do repositório.
 
-**Próximo passo:** (1) **deploy público** (falta; depende da conta do dono na Vercel) e preencher a URL no `README.md`; (2) depois do deploy, conferir acesso direto, refresh e tempo real na URL publicada; (3) opcional, reduzir o JavaScript inicial para subir o Performance mobile (ver `lighthouse/RESULTADOS.md`).
+**Deploy (2026-11-06):** publicado na Vercel em https://frontend-challenge-jg.vercel.app, a partir do commit `b4f9be1` (os commits seguintes só mexem em testes e documentação). A suíte Playwright rodou contra a URL publicada (`E2E_BASE_URL`): desktop 53 e mobile 50 passados, 4 pulados, cobrindo acesso direto, refresh, login, compra até o recibo e tempo real. O teste de sessão expirada no checkout foi ajustado porque, na rede mais lenta, a expiração de uso único chegava por uma consulta em segundo plano antes do clique; o app já se comportava certo.
+
+**Próximo passo:** (1) enviar o link do repositório e a URL pública; (2) opcional, reduzir o JavaScript inicial para subir o Performance mobile (ver `lighthouse/RESULTADOS.md`).
 
 Pendências abertas: "Mercado, Criadores, Aprenda" do Header são botões inertes (fora do escopo, §3); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 
@@ -160,7 +162,7 @@ Início e detalhe, mobile e desktop, build otimizado, cenário padrão dos mocks
 
 ## Entrega (§12)
 
-- [ ] Deploy público (Vercel, Netlify ou Cloudflare Pages) com mocks e tempo real funcionando
-- [ ] Acesso direto e refresh de rotas funcionam no ambiente publicado (fallback de SPA)
-- [ ] Versão publicada corresponde ao código entregue
+- [x] Deploy público (Vercel, Netlify ou Cloudflare Pages) com mocks e tempo real funcionando
+- [x] Acesso direto e refresh de rotas funcionam no ambiente publicado (fallback de SPA)
+- [x] Versão publicada corresponde ao código entregue
 - [ ] Link do repositório e URL pública enviados

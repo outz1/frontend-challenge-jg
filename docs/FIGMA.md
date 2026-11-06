@@ -1,8 +1,8 @@
 # Figma: mapa de frames e tokens
 
-Arquivo de trabalho (cópia editável): https://www.figma.com/design/E575FWu2tqtvs0HBybXIfg/Frontend-Challenge--Copy-?node-id=0-1
+Arquivo de trabalho (cópia editável): https://www.figma.com/design/DWOkjTyFcXkNJxIJkueTlB/Frontend-Challenge--Copy-?node-id=0-1
 
-- `fileKey`: `E575FWu2tqtvs0HBybXIfg`
+- `fileKey`: `DWOkjTyFcXkNJxIJkueTlB`
 - Página: `0:1` (Marketplace de NFTs GreenMint). Marca exibida nas telas: **Kurio**.
 - Para implementar uma tela, chamar `get_design_context` com o `nodeId` da tabela abaixo (um frame ou seção por vez, nunca a página inteira).
 
@@ -92,6 +92,6 @@ Line-height `100` no Figma significa 100% (auto). Alguns estilos Body 14 têm le
 - **Carrinho mobile** (`16:360`): itens somam 8.14 ETH, mas o subtotal exibe 8.92 ETH. Valores na implementação vêm da cotação da API (§3), não do Figma.
 - **Sidebar da conta**: todas as camadas de texto se chamam "Profile Details / Wallets / Activity / ..."; os rótulos reais precisam ser lidos no `get_design_context`. Activity, Watchlist (exceto favoritos), Offers, Downloads e Support estão fora do escopo (§3) e não podem aparentar sucesso.
 - **Login/Cadastro**: botões sociais e "Esqueceu a senha?" não fazem parte dos fluxos exigidos; tratar como ação indisponível com feedback honesto (§3).
-- **Carteiras**: formulário tem campos marcados como obrigatórios sem relação óbvia com carteira (Código de indicação, Nome do perfil). Decidir quais validar e registrar a decisão.
+- **Carteiras**: formulário tem campos marcados como obrigatórios sem relação óbvia com carteira (Código de indicação, Nome do perfil). Decidido em `docs/decisoes/0007-campos-perfil-e-carteiras.md`.
 - Login, Cadastro e Confirmação são **modais** sobre a página no desktop e **telas cheias** no mobile. As rotas precisam suportar acesso direto nos dois casos.
 - Perfil, Carteiras e Confirmação não têm frame mobile: adaptar a partir do padrão das demais telas mobile (header com botão voltar, cards 358px, botão 60px).

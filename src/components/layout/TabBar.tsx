@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { useSession } from '@/api/queries/session'
 import bg from '@/assets/icons/tab-bg.svg'
 import center from '@/assets/icons/tab-center.svg'
 import home from '@/assets/icons/tab-home.svg'
@@ -19,6 +20,8 @@ const UNAVAILABLE = 'Indisponível nesta demonstração'
  * Favoritos e o botão central ficam indisponíveis: favoritos nascem com a sessão e o scan está fora do escopo (§3).
  */
 export function TabBar({ cartCount = 0 }: { cartCount?: number }) {
+  // Logado, o item de usuário abre o perfil; visitante vai ao login.
+  const { user: sessionUser } = useSession()
   return (
     <nav aria-label="Navegação principal" className="fixed inset-x-0 bottom-0 z-30 h-[126px] overflow-hidden md:hidden">
       <div className="pointer-events-none absolute inset-[24.6%_0_0.04%_0]">
@@ -58,7 +61,11 @@ export function TabBar({ cartCount = 0 }: { cartCount?: number }) {
       >
         <img src={shop} alt="" className="absolute inset-0 block size-full max-w-none" />
       </Link>
-      <Link to="/login" aria-label="Entrar" className={`absolute inset-[56.35%_9.66%_27.78%_85.51%] ${HIT}`}>
+      <Link
+        to={sessionUser ? '/profile' : '/login'}
+        aria-label={sessionUser ? 'Meu perfil' : 'Entrar'}
+        className={`absolute inset-[56.35%_9.66%_27.78%_85.51%] ${HIT}`}
+      >
         <img src={user} alt="" className="absolute inset-0 block size-full max-w-none" />
       </Link>
     </nav>

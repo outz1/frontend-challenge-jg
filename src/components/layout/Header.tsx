@@ -21,6 +21,8 @@ export function Header({ cartCount = 0 }: HeaderProps) {
   const router = useRouter()
   // Figma: nas telas do fluxo de compra o item ativo do menu é "Mercado", não "Início".
   const inMarketFlow = useRouterState({ select: (state) => /^\/(nft|cart|checkout)(\/|$)/.test(state.location.pathname) })
+  // Figma: Perfil e Carteiras mantêm "Início" como item ativo (Header Row, Active = Home).
+  const inAccount = useRouterState({ select: (state) => /^\/(profile|wallets)(\/|$)/.test(state.location.pathname) })
   return (
     <header className="mx-auto w-full max-w-page px-4 min-[1240px]:px-0">
       <div className="flex h-11 items-start justify-between">
@@ -40,8 +42,8 @@ export function Header({ cartCount = 0 }: HeaderProps) {
           >
             {({ isActive }) => (
               <>
-                <span>Início</span>
-                {isActive && (
+                <span className={inAccount ? 'font-bold text-text-accent' : undefined}>Início</span>
+                {(isActive || inAccount) && (
                   <img
                     src={navUnderline}
                     alt=""
@@ -89,10 +91,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
           {user ? (
             <div className="flex items-center gap-3">
-              <p className="hidden max-w-[140px] truncate text-[14px] text-text-foreground lg:block" title={user.email}>
-                <span className="sr-only">Conectado como </span>
+              <Link to="/profile" className="hidden max-w-[140px] truncate text-[14px] text-text-foreground lg:block" title="Meu perfil">
+                <span className="sr-only">Meu perfil, conectado como </span>
                 {user.name.split(' ')[0]}
-              </p>
+              </Link>
               <button
                 type="button"
                 aria-disabled={logout.isPending}

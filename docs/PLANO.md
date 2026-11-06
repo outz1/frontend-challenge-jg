@@ -11,16 +11,16 @@ Prioridade definida pelo dono do projeto: **fechar o fluxo de compra**, depois c
 
 ## Passos
 
-### 1. Cenários de falha do checkout, em navegador
+### 1. Cenários de falha do checkout, em navegador (feito)
 
-Estado: compra feliz verificada em 1440 e 414. Falhas ainda não.
+Estado: 16 cenários verificados em navegador (ver `docs/ESTADO.md`). Continuam valendo como roteiro para os testes do passo 5.
 
 - Pagamento recusado, timeout após criar o pedido (recuperar o mesmo pedido pela idempotência), cotação desatualizada (`quote_stale`), edição esgotada durante a compra (`availability_conflict`), clique repetido, refresh com pedido pendente.
 - Mudança de preço ou disponibilidade via Socket.IO com o checkout aberto: UI avisa, resumo atualiza, cotação velha não fecha pedido (§7).
 - Seleção dos cenários: `?scenario=<nome>` ou `localStorage['kurio:scenario']` (ver `mocks/network.ts`).
 - Critério: cada cenário se comporta como descrito em §3 e §7, sem pedido duplicado, e vira teste no passo 5.
 
-### 2. Perfil e Carteiras
+### 2. Perfil e Carteiras (feito, decisão em `docs/decisoes/0007-campos-perfil-e-carteiras.md`)
 
 - Ler no Figma, um frame por vez (`get_design_context`): sidebar da conta `70420:4536`, Perfil `9:1238`, Carteiras `9:1670` (formulários `70386:239` e `70390:239`).
 - Registrar a decisão dos campos em `docs/decisoes/0007-campos-perfil-e-carteiras.md`: só campos que existem no nosso Figma, quais são obrigatórios e quais ficam fora. Resolve a pendência `0002` e a dúvida sobre "Código de indicação" e "Nome do perfil" em `docs/FIGMA.md`.
@@ -38,7 +38,6 @@ Estado: compra feliz verificada em 1440 e 414. Falhas ainda não.
 
 ### 4. Pendências conhecidas
 
-- Item de usuário da tab bar mobile leva a `/login` mesmo logado.
 - `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 - "Mercado, Criadores, Aprenda" do Header são botões inertes por escopo (§3).
 - Login falhou uma vez em um script ad hoc e passou nas tentativas seguintes; causa não investigada.

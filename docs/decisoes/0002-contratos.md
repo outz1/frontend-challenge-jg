@@ -108,5 +108,5 @@ Regras de consumo:
 
 ## Pendências conhecidas
 
-- Campos finais de `collector` (Pagamento) e de `Profile` dependem da leitura dos frames `11:2862` e `9:1238`.
+- Campos finais de `collector`, `Profile` e `Wallet`: definidos em `0007` (Perfil, Carteiras e recibo) e `0006` (Pagamento).
 - Taxas e cupons concretos nascem nas fixtures; o contrato só exige que o servidor devolva os valores calculados.

@@ -129,8 +129,8 @@ O cliente é o `socket.io-client` real, só com `transports: ['websocket']`, no 
 - Segurança do mock é demonstrativa: hash SHA-256 e token ficam no navegador; uma API real exigiria cookie `HttpOnly`, hash lento no servidor e TLS.
 - A carteira, a rede e o pagamento são simulados; "Ver no Etherscan", compartilhar, Google, Facebook, "Ler mais", Atividade, Ofertas e afins não executam ação e avisam disso (fora do escopo, §3).
 - O catálogo tem 36 NFTs determinísticos reutilizando as artes exportadas do Figma, e as contagens das facetas vêm das fixtures, não dos números ilustrativos do Figma.
-- O MSW entra no pacote de produção do deploy de demonstração, o que pesa no mobile: Performance 65 e 66 contra a meta de 90 (`lighthouse/RESULTADOS.md`). As demais categorias atingem as metas.
-- Várias telas existem em duas árvores no DOM (desktop e mobile, uma escondida por CSS) porque os frames são composições diferentes; isso duplica algumas requisições de imagem (mesma URL, cache do navegador).
+- O MSW entra no pacote de produção do deploy de demonstração e fica no caminho crítico do mobile (o primeiro render espera o worker). Com as otimizações de `docs/decisoes/0009-performance-mobile.md`, o mobile mede 92 e 90 em Performance, mas a nota depende da CPU de quem mede (`lighthouse/RESULTADOS.md`).
+- Telas com frames diferentes no mobile e no desktop montam só a composição do viewport atual (`useMediaQuery`). Redimensionar a janela entre os breakpoints troca a árvore, e o estado local da que sai se perde (por exemplo, a imagem escolhida na galeria); dados remotos e estado de compra continuam no cache e nos hooks compartilhados.
 - Perfil, Carteiras e Confirmação não têm frame mobile: foram adaptados do padrão das telas mobile existentes.
 
 ## Decisões de UX

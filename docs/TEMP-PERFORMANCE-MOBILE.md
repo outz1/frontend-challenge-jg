@@ -2,6 +2,13 @@
 
 Arquivo de apoio para continuar em outra IDE ou sessão (Cowork). **Apagar este arquivo quando a meta for atingida** e registrar o resultado em `lighthouse/RESULTADOS.md` e `docs/ESTADO.md` (o dono dos fatos é cada um deles; este plano só ordena o trabalho).
 
+## Andamento (2026-11-06)
+
+- Passos 1, 2 e 3 feitos, mais imagens responsivas e botão Voltar no skeleton do detalhe mobile (commits `bdef86a` a `b76024e`, decisão `docs/decisoes/0009-performance-mobile.md`). O passo 2 se resolveu com o 1: a galeria desktop escondida pedia a imagem do LCP antes, com prioridade baixa. O 4 e o 5 foram avaliados: o JS que sobra é de framework, e o CSS embutido deu no máximo 1 ponto (não adotado).
+- Rodada oficial numa máquina de nuvem ociosa: mobile 92 (início) e 90 (detalhe), desktop 100 e 100, demais categorias mantidas (`lighthouse/RESULTADOS.md`). No mesmo ambiente, antes das mudanças: 87 e 84.
+- **Pendente:** medir na máquina local. Aquela CPU tem índice de benchmark perto de 1100, contra cerca de 3300 na nuvem, e a limitação 4x a penaliza mais. Se der 90 ou mais, apagar este arquivo. Se não der, o próximo candidato é `zod/mini` nos contratos (cerca de 20 kB comprimidos a menos no caminho crítico).
+- Ambiente de nuvem: o Playwright do projeto (1.64.1) procura o Chromium build 1248, e a máquina tinha o 1243. Foi preciso um link simbólico local (fora do repositório) para rodar Lighthouse e testes.
+
 ## Objetivo
 
 Performance mobile >= 90 (mediana de 3 medições) em **início** (`/`) e **detalhe** (`/nft/nft-001`), sem remover funcionalidade, mocks, imagens ou fontes (§10: "sem simplificações exclusivas para melhorar a pontuação"). Acessibilidade, Boas práticas e SEO já passam (100, 100, 92) e não podem regredir. O desktop já passa (97 e 98).

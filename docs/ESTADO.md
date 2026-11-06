@@ -8,13 +8,13 @@ Atualizado em 2026-11-06.
 
 **Infra de teste e auditoria (2026-11-06):** `playwright.config.ts` (desktop 1440 e mobile 390, traces, baselines em `e2e/*-snapshots`), `vercel.json` (fallback de SPA) e `lighthouse/run.mjs` (4 alvos, 3 medições, mediana, ambiente; relatórios em `lighthouse/reports/`) foram portados de `/home/edu/Desktop/jg-mockk`, um projeto de terceiro sobre o mesmo Figma, e adaptados às nossas rotas. Scripts `test`, `test:update` e `lighthouse` no `package.json`. Falta escrever os testes em `e2e/` e rodar as 3 medições oficiais. O `jg-mockk` serve só de referência: nenhum relatório, baseline ou teste dele entra aqui, porque descrevem outra implementação. Ele confirma, a partir do Figma, campos que ainda estão em aberto aqui: Perfil (nome de exibição, usuário, e-mail, ENS, apelido da carteira, avatar, senha) e Carteiras (decisão pendente, ver `docs/FIGMA.md`).
 
-**Lighthouse (2026-11-06):** 3 medições por alvo, relatórios e ambiente em `lighthouse/` (`RESULTADOS.md`). Desktop passa em tudo; o mobile fica em Performance 65 e 66 contra a meta de 90, com a causa documentada (custo de JavaScript do app e do MSW sob CPU 4 vezes mais lenta). A auditoria achou e corrigiu um CLS de 0,29 no detalhe desktop (rodapé que pulava).
+**Lighthouse (2026-11-06):** 3 medições por alvo, relatórios e ambiente em `lighthouse/` (`RESULTADOS.md`). A primeira rodada oficial (notebook com carga de 3 a 4) deu 65 e 66 no mobile; a auditoria achou e corrigiu um CLS de 0,29 no detalhe desktop (rodapé que pulava). Depois das otimizações mobile (decisão `0009`: uma composição por viewport, chunk do MSW menor e baixado em paralelo, imagens de 450 px em `srcset`, botão Voltar no skeleton do detalhe), a rodada oficial do commit `b76024e` atinge todas as metas: Performance 92 e 90 no mobile e 100 e 100 no desktop, Acessibilidade 100, Boas práticas 100 e SEO 92. Essa rodada foi feita numa máquina de nuvem ociosa e mais rápida (índice de CPU do Lighthouse perto de 3300, contra cerca de 1100 no notebook). No mesmo ambiente, a versão anterior dava 87 e 84, ou seja, o ganho é real, mas no notebook a nota mobile deve ficar abaixo. Falta confirmar na máquina local (`docs/TEMP-PERFORMANCE-MOBILE.md`). Depois dessas mudanças, `npm run test` deu 110 passados, 4 pulados e 2 falhas no teste de avatar (`08-conta`, desktop e mobile), que falha igual no commit anterior às mudanças neste ambiente (Chromium 153); não foi investigado.
 
 **Documentação (2026-11-06):** `README.md` e `ARCHITECTURE.md` completos. Checkout limpo comprovado: um clone novo do repositório rodou `npm ci`, `lint`, `typecheck`, `build` e testes Playwright (detalhe e regressão visual) sem nada fora do repositório.
 
 **Deploy (2026-11-06):** publicado na Vercel em https://frontend-challenge-jg.vercel.app, a partir do commit `b4f9be1` (os commits seguintes só mexem em testes e documentação). A suíte Playwright rodou contra a URL publicada (`E2E_BASE_URL`): desktop 53 e mobile 50 passados, 4 pulados, cobrindo acesso direto, refresh, login, compra até o recibo e tempo real. O teste de sessão expirada no checkout foi ajustado porque, na rede mais lenta, a expiração de uso único chegava por uma consulta em segundo plano antes do clique; o app já se comportava certo.
 
-**Próximo passo:** (1) enviar o link do repositório e a URL pública; (2) opcional, reduzir o JavaScript inicial para subir o Performance mobile (ver `lighthouse/RESULTADOS.md`).
+**Próximo passo:** (1) medir o mobile na máquina local e, confirmado, apagar `docs/TEMP-PERFORMANCE-MOBILE.md`; (2) publicar de novo na Vercel (`npx vercel --prod`), porque o deploy é de `b4f9be1` e não tem as otimizações; (3) enviar o link do repositório e a URL pública.
 
 Pendências abertas: "Mercado, Criadores, Aprenda" do Header são botões inertes (fora do escopo, §3); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 
@@ -146,7 +146,7 @@ Início e detalhe, mobile e desktop, build otimizado, cenário padrão dos mocks
 
 - [x] Config do Lighthouse versionada
 - [x] 3 medições por página e perfil, mediana por categoria
-- [ ] Metas de Performance, Accessibility, Best Practices e SEO do §10 (Accessibility 100, Best Practices 100 e SEO 92 em todos os alvos; Performance 97 e 98 no desktop e 65 e 66 no mobile, ver `lighthouse/RESULTADOS.md`)
+- [x] Metas de Performance, Accessibility, Best Practices e SEO do §10 (commit `b76024e`: Performance 100 e 100 no desktop e 92 e 90 no mobile; Accessibility 100, Best Practices 100 e SEO 92 em todos os alvos; ambiente e ressalva de CPU em `lighthouse/RESULTADOS.md`)
 - [x] LCP, CLS e TBT registrados
 - [x] Relatórios HTML/JSON, versões das ferramentas, ambiente e condições
 - [x] Justificativa e causa para qualquer meta não atingida

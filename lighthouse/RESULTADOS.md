@@ -1,46 +1,55 @@
 # Auditoria Lighthouse (§10)
 
-Início (`/`) e detalhe do NFT (`/nft/nft-001`), mobile e desktop, build otimizado com o cenário padrão dos mocks. Três medições por página e perfil; as notas abaixo são a mediana. Relatórios completos em `lighthouse/reports/` (`<alvo>-run-<n>.html` e `.json`, mais `lighthouse-summary.json` com ambiente e versões).
+Início (`/`) e detalhe do NFT (`/nft/nft-001`), mobile e desktop, build otimizado com o cenário padrão dos mocks. Três medições por página e perfil; as notas abaixo são a mediana. Relatórios completos em `lighthouse/reports/` (`<alvo>-run-<n>.html` e `.json`, mais `lighthouse-summary.json` com ambiente, versões e commit).
 
-## Resultado (commit `8a4b424`)
+## Resultado (commit `b76024e`)
 
 | Alvo | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | TBT |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Início desktop | 97 | 100 | 100 | 92 | 1,20 s | 0,0002 | 21 ms |
-| Detalhe desktop | 98 | 100 | 100 | 92 | 1,14 s | 0,0001 | 0 ms |
-| Início mobile | **65** | 100 | 100 | 92 | 4,30 s | 0,0002 | 662 ms |
-| Detalhe mobile | **66** | 100 | 100 | 92 | 4,57 s | 0 | 590 ms |
+| Início desktop | 100 | 100 | 100 | 92 | 0,81 s | 0,0001 | 0 ms |
+| Detalhe desktop | 100 | 100 | 100 | 92 | 0,75 s | 0 | 0 ms |
+| Início mobile | 92 | 100 | 100 | 92 | 3,07 s | 0 | 31 ms |
+| Detalhe mobile | 90 | 100 | 100 | 92 | 3,40 s | 0 | 16 ms |
 
-Metas do §10: Performance 90, Acessibilidade 95, Boas práticas 95, SEO 90. **Todas as metas foram atingidas, exceto Performance no mobile.** Notas por execução da Performance: início desktop 97, 96, 97; detalhe desktop 98, 97, 98; início mobile 61, 67, 65; detalhe mobile 65, 67, 66.
+Metas do §10: Performance 90, Acessibilidade 95, Boas práticas 95, SEO 90. **Todas as metas foram atingidas nos quatro alvos** (o script saiu com código 0). Notas por execução da Performance: início desktop 100, 100, 99; detalhe desktop 100, 100, 100; início mobile 92, 92, 92; detalhe mobile 90, 90, 90.
 
 ## Ambiente e condições
 
-- Lighthouse 13.6.0, Chromium 156.0.8078.4 (o do Playwright), Node v24.19.0.
-- Linux 7.1 (x64), Intel Core i7-8650U 1,9 GHz, 16 GiB. Carga do sistema durante a rodada: 3,86 antes e 1,78 depois (média de 1 minuto), com editor e navegador abertos. O índice de benchmark de CPU do Lighthouse ficou perto de 1040 a 1060.
+- Lighthouse 13.6.0, Chromium 153.0.8010.12 (o do Playwright), Node v22.23.4.
+- Linux 6.18 (x64), Intel Xeon 2,3 GHz (4 núcleos), 16 GiB, máquina de nuvem sem outros programas abertos. Carga do sistema: 1,39 antes e 0,77 depois (média de 1 minuto). Índice de benchmark de CPU do Lighthouse entre 3150 e 3390.
 - Perfil mobile: emulação 390 por 844, limitação simulada padrão do Lighthouse (4G lenta, CPU 4 vezes mais lenta). Perfil desktop: configuração `desktop` do Lighthouse, 1440 por 1000.
-- Servidor: `vite preview` do build gerado por `npm run build` (mocks ligados, MSW ativo). Imagens, fontes e funcionalidades são as da entrega; nada foi simplificado para a nota.
+- Servidor: `vite preview` do build gerado por `npm run build` (mocks ligados, MSW ativo, latência variável padrão de 150 a 749 ms). Imagens, fontes e funcionalidades são as da entrega; nada foi simplificado para a nota.
 - Como reproduzir: `npm run build` e depois `npm run lighthouse` (`LH_RUNS` e `LH_TARGETS` restringem a rodada).
 
-## O que foi corrigido por causa da auditoria
+**A nota mobile depende da CPU da máquina.** A limitação de CPU é um multiplicador sobre a máquina que mede. A rodada anterior (commit `8a4b424`, notebook com i7-8650U, carga de 3 a 4, índice de benchmark perto de 1050 a 1180) deu 65 e 66 no mobile. Numa máquina como aquela, as notas desta versão devem ficar abaixo das da tabela. Por isso a comparação abaixo usa o mesmo ambiente antes e depois.
 
-A primeira rodada deu CLS 0,2857 no detalhe desktop e Performance 84. A causa era o rodapé: o skeleton do detalhe era mais baixo que a página carregada, e o rodapé descia quando os dados chegavam. O skeleton passou a espelhar a estrutura da página (galeria e coluna de informações com 448 px, seção de detalhes e carrossel). O CLS caiu a zero e a nota subiu a 98.
+## O que mudou e quanto ajudou (mesmo ambiente, mediana mobile)
 
-## Por que o mobile não atinge 90
+| Etapa | Início | Detalhe | Detalhe técnico |
+| --- | ---: | ---: | --- |
+| Antes (commit `127bc66`) | 87 | 84 | LCP 3,9 e 4,1 s; 384 KiB transferidos |
+| Uma composição por viewport | 86 | 81 | TBT cai; LCP igual (diferença dentro do ruído de 1 execução) |
+| Chunk do MSW de 174 para 110 kB comprimido | 89 | 84 | LCP 3,56 e 3,80 s |
+| `modulepreload` do chunk do MSW | 92 | 88 | LCP 3,09 e 3,39 s |
+| Variantes de 450 px em `srcset` | 92 | 87 | Imagem do LCP de 47 para 17 kB; ganho fora do caminho crítico simulado |
+| Botão Voltar no skeleton do detalhe | 92 | 90 | FCP do detalhe de 2,66 para 2,05 s |
 
-O Início e o detalhe mobile ficam abaixo da meta só em Performance, por TBT (cerca de 600 ms) e LCP (cerca de 4,3 s). Causa, com base nos relatórios:
+Detalhes e motivos em `docs/decisoes/0009-performance-mobile.md`. Resumo:
 
-- **Custo de JavaScript sob CPU 4 vezes mais lenta.** O arranque executa cerca de 700 a 800 ms de script do chunk do MSW (`browser-*.js`, 475 kB, 174 kB comprimido) e 400 a 650 ms do chunk principal do app. O total transferido é de 384 KiB, dos quais cerca de 100 KiB sem uso na tela inicial.
-- **O MSW faz parte do que é auditado.** O enunciado pede a auditoria com o cenário padrão dos mocks e sem simplificações. Uma versão sem mocks (`npm run dev:real` apontando para uma API real) não carregaria esse chunk.
-- **LCP descoberto tarde.** No detalhe, a imagem principal só existe depois que o JavaScript busca o NFT, então o relatório aponta 828 ms de atraso no início do carregamento do recurso (a requisição não aparece no HTML inicial). No início, a imagem do hero demora a renderizar depois do JavaScript.
-- **Variação por ambiente.** Uma rodada anterior, feita com a máquina mais ociosa, mediu 76 e 75 (TBT de 357 e 331 ms, LCP de 4,07 e 4,38 s) nesses dois perfis. Com a carga de 3 a 4 de hoje, a mesma limitação de CPU simulada amplifica o ruído e dá 65 e 66. Os relatórios da rodada anterior não foram arquivados.
+- **Composição desktop escondida:** o mobile baixava o hero desktop, a galeria desktop (que pedia a imagem do LCP com prioridade baixa, antes da ocorrência mobile) e executava as duas árvores. Agora só a árvore do viewport é montada.
+- **Chunk do MSW:** 250 kB dos 475 kB eram a lista de sufixos públicos do `tldts`, usada pelo `tough-cookie` do MSW. O alias para `tldts-experimental` mantém API e dados em formato compacto.
+- **Download em paralelo:** o chunk do MSW só começava a baixar depois que o bundle principal executava. A dica `modulepreload` no HTML baixa os dois juntos, sem mudar a ordem de execução.
+- **Skeleton do detalhe mobile:** blocos de cor não contam como conteúdo, e o mobile não tem cabeçalho, então nada era pintado até a API responder. O botão Voltar real, já funcional, entra no skeleton.
 
 ## Tentativas que não ajudaram (registradas para não repetir)
 
 - Baixar o código do app e o do mock em paralelo (`Promise.all`) piorou o TBT (de cerca de 350 para cerca de 1000 ms no mobile), porque a execução dos dois ficou depois do primeiro render.
-- Pré-carregar as fontes não mudou a nota (62 a 64 com e sem preload, mesma carga de CPU).
+- Pré-carregar as fontes não mudou a nota.
+- Registrar o Service Worker do MSW por script inline antes dos bundles: nota igual (o Lighthouse simula a rede e não modela a instalação do worker).
+- Baixar os chunks da rota atual antes do MSW subir: neutro no detalhe, pior no início.
+- CSS embutido no HTML: no máximo 1 ponto, e o CSS deixa de ser reaproveitado do cache entre páginas.
 
-## Próximos ganhos possíveis
+## O que ainda pesa
 
-- Dividir o chunk principal e adiar o que a tela inicial não usa (a auditoria aponta cerca de 100 KiB).
-- Servir a imagem do hero com `<link rel="preload">` específico para a rota inicial.
-- Medir em máquina ociosa para uma comparação sem ruído.
+- **LCP do detalhe mobile (3,4 s):** a imagem depende da resposta de `GET /nfts/nft-001`, que tem a latência variável do mock (§6). Mudar a latência seria simplificação para a nota.
+- **JavaScript de framework no caminho crítico:** react-dom, MSW, zod, axios e o router somam a maior parte dos 324 KiB transferidos. Trocar `zod` por `zod/mini` reduziria cerca de 20 kB comprimidos, com reescrita dos contratos.

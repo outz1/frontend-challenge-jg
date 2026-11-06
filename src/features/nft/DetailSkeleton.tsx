@@ -1,12 +1,21 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
+import { BackButton } from './MobileDetail'
 
 /** Mesmas dimensões do detalhe carregado, para não haver layout shift (§8). Uma composição por viewport. */
 export function DetailSkeleton() {
   const desktop = useMediaQuery(MD_UP)
   return (
-    <div role="status" aria-label="Carregando NFT">
-      <div aria-hidden="true">{desktop ? <DesktopDetailSkeleton /> : <MobileDetailSkeleton />}</div>
+    <div className="relative">
+      <div role="status" aria-label="Carregando NFT">
+        <div aria-hidden="true">{desktop ? <DesktopDetailSkeleton /> : <MobileDetailSkeleton />}</div>
+      </div>
+      {/* No mobile não há cabeçalho: o botão de voltar já funciona durante a carga, na mesma posição do detalhe. */}
+      {!desktop && (
+        <div className="absolute top-[23px] left-[26px]">
+          <BackButton />
+        </div>
+      )}
     </div>
   )
 }

@@ -125,8 +125,8 @@ export function MobileDetail({ nft, purchase }: { nft: Nft; purchase: Purchase }
   )
 }
 
-/** Volta no histórico quando há para onde voltar; em acesso direto leva ao Início. */
-function BackButton() {
+/** Volta no histórico quando há para onde voltar; em acesso direto leva ao Início. Também no skeleton. */
+export function BackButton() {
   const router = useRouter()
   const canGoBack = useCanGoBack()
   const content = <img src={backArrow} alt="" width={13} height={7} className="block rotate-90" />

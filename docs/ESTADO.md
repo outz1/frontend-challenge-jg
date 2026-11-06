@@ -8,7 +8,9 @@ Atualizado em 2026-11-06.
 
 **Infra de teste e auditoria (2026-11-06):** `playwright.config.ts` (desktop 1440 e mobile 390, traces, baselines em `e2e/*-snapshots`), `vercel.json` (fallback de SPA) e `lighthouse/run.mjs` (4 alvos, 3 medições, mediana, ambiente; relatórios em `lighthouse/reports/`) foram portados de `/home/edu/Desktop/jg-mockk`, um projeto de terceiro sobre o mesmo Figma, e adaptados às nossas rotas. Scripts `test`, `test:update` e `lighthouse` no `package.json`. Falta escrever os testes em `e2e/` e rodar as 3 medições oficiais. O `jg-mockk` serve só de referência: nenhum relatório, baseline ou teste dele entra aqui, porque descrevem outra implementação. Ele confirma, a partir do Figma, campos que ainda estão em aberto aqui: Perfil (nome de exibição, usuário, e-mail, ENS, apelido da carteira, avatar, senha) e Carteiras (decisão pendente, ver `docs/FIGMA.md`).
 
-**Próximo passo:** (1) Lighthouse, `ARCHITECTURE.md`, `README.md` e deploy.
+**Lighthouse (2026-11-06):** 3 medições por alvo, relatórios e ambiente em `lighthouse/` (`RESULTADOS.md`). Desktop passa em tudo; o mobile fica em Performance 65 e 66 contra a meta de 90, com a causa documentada (custo de JavaScript do app e do MSW sob CPU 4 vezes mais lenta). A auditoria achou e corrigiu um CLS de 0,29 no detalhe desktop (rodapé que pulava).
+
+**Próximo passo:** (1) `ARCHITECTURE.md`, `README.md` e deploy; (2) opcional, reduzir o JavaScript inicial para subir o mobile (ver `lighthouse/RESULTADOS.md`).
 
 Pendências abertas: "Mercado, Criadores, Aprenda" do Header são botões inertes (fora do escopo, §3); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 
@@ -138,13 +140,13 @@ Executáveis com os mocks, Chromium, viewports desktop e mobile (§9).
 
 Início e detalhe, mobile e desktop, build otimizado, cenário padrão dos mocks (§10).
 
-- [ ] Config do Lighthouse versionada
-- [ ] 3 medições por página e perfil, mediana por categoria
-- [ ] Metas de Performance, Accessibility, Best Practices e SEO do §10
-- [ ] LCP, CLS e TBT registrados
-- [ ] Relatórios HTML/JSON, versões das ferramentas, ambiente e condições
-- [ ] Justificativa e causa para qualquer meta não atingida
-- [ ] Auditoria com imagens, fontes e funcionalidades reais, sem simplificação só para a nota
+- [x] Config do Lighthouse versionada
+- [x] 3 medições por página e perfil, mediana por categoria
+- [ ] Metas de Performance, Accessibility, Best Practices e SEO do §10 (Accessibility 100, Best Practices 100 e SEO 92 em todos os alvos; Performance 97 e 98 no desktop e 65 e 66 no mobile, ver `lighthouse/RESULTADOS.md`)
+- [x] LCP, CLS e TBT registrados
+- [x] Relatórios HTML/JSON, versões das ferramentas, ambiente e condições
+- [x] Justificativa e causa para qualquer meta não atingida
+- [x] Auditoria com imagens, fontes e funcionalidades reais, sem simplificação só para a nota
 
 ## Arquitetura e documentação (5)
 

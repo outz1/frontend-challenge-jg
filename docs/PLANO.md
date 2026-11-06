@@ -51,7 +51,7 @@ Estado: 16 cenários verificados em navegador (ver `docs/ESTADO.md`). Continuam 
 
 ### 6. Fechamento da entrega (§10, §12)
 
-- Lighthouse: `npm run build` e depois `npm run lighthouse` (4 alvos, 3 medições, mediana, LCP/CLS/TBT, ambiente). Relatórios em `lighthouse/reports/`. Metas: Performance 90, Accessibility 95, Best Practices 95, SEO 90; justificar o que ficar abaixo.
+- Lighthouse (feito, ver `lighthouse/RESULTADOS.md`): `npm run build` e depois `npm run lighthouse` (4 alvos, 3 medições, mediana, LCP/CLS/TBT, ambiente). Relatórios em `lighthouse/reports/`. Metas: Performance 90, Accessibility 95, Best Practices 95, SEO 90; justificar o que ficar abaixo.
 - `ARCHITECTURE.md` e `README.md` conforme `CLAUDE.md`.
 - Deploy público (Vercel; `vercel.json` já tem o fallback de SPA). Link do repositório e URL pública.
 - Marcar `[x]` em `docs/ESTADO.md` somente com evidência.

@@ -5,7 +5,7 @@ import desktopConfig from 'lighthouse/core/config/desktop-config.js'
 import { execFileSync, spawn } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { cpus, release, totalmem } from 'node:os'
+import { cpus, loadavg, release, totalmem } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import lighthouse from 'lighthouse'
 import { chromium } from '@playwright/test'
@@ -56,6 +56,8 @@ try {
   // Código exportado pode não ter histórico Git.
 }
 
+// Carga do sistema antes e depois: a limitação de CPU do Lighthouse amplifica ruído de outros programas.
+const loadBefore = loadavg()
 await mkdir(outputDir, { recursive: true })
 const preview = process.env.LH_BASE_URL
   ? undefined
@@ -125,6 +127,8 @@ try {
           memoryGiB: Math.round(totalmem() / 1024 ** 3),
           chromium: browser.version(),
           lighthouse: lighthouseVersion,
+          loadAverageBefore: loadBefore.map((v) => Number(v.toFixed(2))),
+          loadAverageAfter: loadavg().map((v) => Number(v.toFixed(2))),
         },
         thresholds,
         targets: summary,

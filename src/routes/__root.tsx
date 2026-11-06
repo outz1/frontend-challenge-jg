@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { TabBar } from '@/components/layout/TabBar'
 import { Toaster } from '@/components/ui/toast'
+import { RealtimeProvider } from '@/realtime/RealtimeProvider'
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -33,6 +34,7 @@ function RootLayout() {
       </div>
       {showTabBar && <TabBar cartCount={cartCount} />}
       <Toaster />
+      <RealtimeProvider />
     </div>
   )
 }

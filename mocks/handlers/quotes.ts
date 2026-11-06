@@ -8,6 +8,7 @@ import {
   type Quote,
 } from '../../src/api/contracts'
 import { eth, findEdition, getCart, maxFor, ownerOf } from '../cart'
+import { db, persist } from '../db'
 import { findCoupon } from '../fixtures/coupons'
 import { applyNetwork, errorResponse } from '../network'
 
@@ -84,6 +85,28 @@ export function buildQuote(ownerKey: string, network: Network): Quote {
   }
 }
 
+/** Impressão digital do que o usuário vê: se mudar, a cotação ficou velha (preço, estoque, cupom, taxa). */
+export function quoteFingerprint(quote: Quote): string {
+  return JSON.stringify({
+    network: quote.network,
+    lines: quote.lines.map((l) => [l.nftId, l.editionId, l.quantity, l.unitPriceEth]),
+    totals: [quote.subtotalEth, quote.discountEth, quote.networkFeeEth, quote.totalEth],
+    coupon: quote.coupon?.code ?? null,
+    issues: quote.issues.map((i) => i.kind),
+  })
+}
+
+const MAX_STORED_QUOTES = 40
+
+/** Guarda a cotação para o pedido comparar depois. Mantém só as mais recentes. */
+export function rememberQuote(ownerKey: string, quote: Quote): Quote {
+  db.quotes[quote.id] = { ownerKey, quote }
+  const ids = Object.keys(db.quotes)
+  if (ids.length > MAX_STORED_QUOTES) for (const id of ids.slice(0, ids.length - MAX_STORED_QUOTES)) delete db.quotes[id]
+  persist()
+  return quote
+}
+
 export const quoteHandlers = [
   http.post(`${API_BASE}${endpoints.quotes}`, async ({ request }) => {
     const failure = await applyNetwork(request)
@@ -92,6 +115,6 @@ export const quoteHandlers = [
     if (owner instanceof Response) return owner
     const parsed = quoteRequestSchema.safeParse(await request.json().catch(() => ({})))
     if (!parsed.success) return errorResponse('validation_error', 'Rede inválida.', { fieldErrors: { network: ['Rede inválida.'] } })
-    return HttpResponse.json(buildQuote(owner.key, parsed.data.network))
+    return HttpResponse.json(rememberQuote(owner.key, buildQuote(owner.key, parsed.data.network)))
   }),
 ]

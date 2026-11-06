@@ -78,7 +78,7 @@ Decisões que vale registrar:
 
 ## Eventos Socket.IO
 
-Transporte: `socket.io-client` real, handshake com `auth: { token }`, path padrão `/socket.io`, servido pelo MSW. Cada usuário entra automaticamente na sala `user:<id>`; eventos de pedido e carrinho só vão para ela.
+Transporte: `socket.io-client` real, handshake com `auth: { token }`, `path: '/realtime'` (o MSW não separa o `/socket.io/` padrão do HMR do Vite), servido pelo MSW. Cada usuário entra automaticamente na sala `user:<id>`; eventos de pedido e carrinho só vão para ela.
 
 Cliente para servidor (com ack):
 

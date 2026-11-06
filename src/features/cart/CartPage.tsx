@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { QuantityStepper } from '@/features/nft/QuantityStepper'
 import { withEthUnit } from '@/lib/eth'
 import { cn } from '@/lib/utils'
+import { useNftSubscription } from '@/realtime/useNftSubscription'
 
 /** Rede usada na cotação do carrinho; a escolha da rede acontece no checkout. */
 const CART_NETWORK = 'ethereum' as const
@@ -21,6 +22,8 @@ const CART_NETWORK = 'ethereum' as const
 export function CartPage() {
   const cart = useCart()
   const quote = useQuote(CART_NETWORK)
+  // Itens do carrinho acompanham mudanças de preço e disponibilidade em tempo real (§7).
+  useNftSubscription(cart.data?.items.map((item) => item.nftId) ?? [])
 
   return (
     <section aria-labelledby="cart-title" className="mx-auto w-full max-w-page px-6 pt-8 pb-16 md:px-4 min-[1240px]:px-0">
@@ -98,9 +101,9 @@ function CartRow({ item, line }: { item: CartItem; line: Quote['lines'][number] 
       </div>
       <QuantityStepper value={desired ?? item.quantity} max={max} onChange={(quantity) => !busy && change(quantity)} />
       <div className="flex items-center justify-between gap-4 sm:w-[150px] sm:flex-col sm:items-end">
-        <p className="text-[16px] font-bold text-text-foreground">
-          {line ? withEthUnit(line.lineTotalEth) : <Skeleton className="inline-block h-4 w-20 align-middle" />}
-        </p>
+        <div className="text-[16px] font-bold text-text-foreground">
+          {line ? withEthUnit(line.lineTotalEth) : <Skeleton className="h-4 w-20" />}
+        </div>
         <button
           type="button"
           onClick={() => !busy && remove.mutate(item.id)}

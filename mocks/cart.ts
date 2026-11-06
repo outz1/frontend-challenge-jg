@@ -61,6 +61,7 @@ export function toCartResponse(cart: CartRecord): Cart {
       unitPriceEth: found.edition.priceEth,
       available: found.edition.available,
       maxPerOrder: found.edition.maxPerOrder,
+      nftVersion: found.nft.version,
     })
   }
   return { items, couponCode: cart.couponCode, version: cart.version, updatedAt: cart.updatedAt }

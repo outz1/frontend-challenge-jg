@@ -15,6 +15,8 @@ export const cartItemSchema = z.object({
   /** Unidades ainda disponíveis; null quando ilimitada. */
   available: z.number().int().nonnegative().nullable(),
   maxPerOrder: z.number().int().positive(),
+  /** Versão do NFT que gerou preço e disponibilidade acima; o cliente só aceita evento mais novo (§7). */
+  nftVersion: z.number().int().nonnegative(),
 })
 export type CartItem = z.infer<typeof cartItemSchema>
 

@@ -8,7 +8,7 @@ import '@fontsource/roboto-mono/700.css'
 import './styles/globals.css'
 import { routeTree } from './routeTree.gen'
 import { createQueryClient } from './api/queryClient'
-import { sessionKeys } from './api/queries/session'
+import { dropPrivateCache, sessionKeys } from './api/queries/session'
 import { onSessionLost } from './auth/events'
 import { safeRedirect } from './auth/guard'
 
@@ -25,8 +25,8 @@ const router = createRouter({
  * (`redirect`) para retomar de onde parou depois de entrar de novo (§3).
  */
 onSessionLost((reason) => {
-  queryClient.clear()
   queryClient.setQueryData(sessionKeys.current, null)
+  dropPrivateCache(queryClient)
   const { pathname, href } = router.state.location
   if (pathname === '/login' || pathname === '/signup') return
   void router.navigate({

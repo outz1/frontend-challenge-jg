@@ -1,4 +1,4 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
 import { http, ApiRequestError } from '../client'
 import {
   authResponseSchema,
@@ -40,14 +40,22 @@ export function useSession() {
   return { session: data ?? null, user: data?.user ?? null, isPending }
 }
 
+/**
+ * Descarta todo o cache MENOS a sessão. Remover a própria query de sessão deixaria quem a observa
+ * (Header, tempo real) preso ao objeto antigo: gravar a sessão primeiro e remover o resto evita isso.
+ */
+export function dropPrivateCache(queryClient: QueryClient) {
+  queryClient.removeQueries({ predicate: (query) => query.queryKey[0] !== sessionKeys.current[0] })
+}
+
 /** Aplica uma sessão nova: guarda o token e descarta todo cache anterior (troca de usuário não vaza dados). */
 function useApplyAuth() {
   const queryClient = useQueryClient()
   return (response: { token: string; user: Session['user']; expiresAt: string }) => {
     setToken(response.token)
-    queryClient.clear()
     const next: Session = { user: response.user, expiresAt: response.expiresAt }
     queryClient.setQueryData(sessionKeys.current, next)
+    dropPrivateCache(queryClient)
   }
 }
 
@@ -81,8 +89,8 @@ export function useLogout() {
       // não deixa sessão ativa. O servidor é avisado em seguida com o token capturado.
       const token = getToken()
       clearToken()
-      queryClient.removeQueries()
       queryClient.setQueryData(sessionKeys.current, null)
+      dropPrivateCache(queryClient)
       if (!token) return
       try {
         await http.post(endpoints.logout, undefined, { headers: { Authorization: `Bearer ${token}` } })

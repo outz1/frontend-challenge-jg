@@ -7,6 +7,7 @@ import { DesktopDetail } from './DesktopDetail'
 import { DetailSkeleton } from './DetailSkeleton'
 import { MobileDetail } from './MobileDetail'
 import { usePurchase } from './purchase'
+import { useNftSubscription } from '@/realtime/useNftSubscription'
 
 export function NftDetailPage({ nftId }: { nftId: string }) {
   const query = useQuery(nftDetailOptions(nftId))
@@ -24,6 +25,7 @@ export function NftDetailPage({ nftId }: { nftId: string }) {
 
 function NftDetail({ nft }: { nft: Nft }) {
   const purchase = usePurchase(nft)
+  useNftSubscription([nft.id])
   return (
     <>
       <DesktopDetail nft={nft} purchase={purchase} />

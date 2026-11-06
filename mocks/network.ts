@@ -15,6 +15,12 @@ export const SCENARIOS = [
   'timeout',
   'session-expired',
   'favorites-error',
+  'wallet-rejected',
+  'payment-declined',
+  'payment-slow',
+  'order-timeout',
+  'price-changed',
+  'sold-out-during-purchase',
 ] as const
 export type Scenario = (typeof SCENARIOS)[number]
 

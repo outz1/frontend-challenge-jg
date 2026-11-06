@@ -1,5 +1,6 @@
 import { ApiRequestError } from '@/api/client'
 import { cn } from '@/lib/utils'
+import { useNftSubscription } from '@/realtime/useNftSubscription'
 import type { NftSummary } from '@/api/contracts'
 import { FavoriteIconButton } from '@/features/nft/FavoriteButton'
 import { NftCard, NftCardSkeleton } from './NftCard'
@@ -8,6 +9,8 @@ const GRID =
   'grid grid-cols-2 gap-x-3 gap-y-6 md:grid-cols-3 md:gap-x-6 md:gap-y-12 lg:gap-x-[34px] lg:gap-y-[72px]'
 
 export function NftGrid({ items }: { items: NftSummary[] }) {
+  // Preço e disponibilidade dos cards visíveis acompanham `nft.updated` (§7).
+  useNftSubscription(items.map((nft) => nft.id))
   return (
     <ul className={GRID}>
       {items.map((nft, index) => (

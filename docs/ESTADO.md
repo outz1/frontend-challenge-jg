@@ -10,7 +10,9 @@ Atualizado em 2026-11-06.
 
 **Lighthouse (2026-11-06):** 3 medições por alvo, relatórios e ambiente em `lighthouse/` (`RESULTADOS.md`). Desktop passa em tudo; o mobile fica em Performance 65 e 66 contra a meta de 90, com a causa documentada (custo de JavaScript do app e do MSW sob CPU 4 vezes mais lenta). A auditoria achou e corrigiu um CLS de 0,29 no detalhe desktop (rodapé que pulava).
 
-**Próximo passo:** (1) `ARCHITECTURE.md`, `README.md` e deploy; (2) opcional, reduzir o JavaScript inicial para subir o mobile (ver `lighthouse/RESULTADOS.md`).
+**Documentação (2026-11-06):** `README.md` e `ARCHITECTURE.md` completos. Checkout limpo comprovado: um clone novo do repositório rodou `npm ci`, `lint`, `typecheck`, `build` e testes Playwright (detalhe e regressão visual) sem nada fora do repositório.
+
+**Próximo passo:** (1) **deploy público** (falta; depende da conta do dono na Vercel) e preencher a URL no `README.md`; (2) depois do deploy, conferir acesso direto, refresh e tempo real na URL publicada; (3) opcional, reduzir o JavaScript inicial para subir o Performance mobile (ver `lighthouse/RESULTADOS.md`).
 
 Pendências abertas: "Mercado, Criadores, Aprenda" do Header são botões inertes (fora do escopo, §3); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 
@@ -150,11 +152,11 @@ Início e detalhe, mobile e desktop, build otimizado, cenário padrão dos mocks
 
 ## Arquitetura e documentação (5)
 
-- [ ] `README.md` da solução (enunciado já movido para `docs/DESAFIO.md`) (§12)
-- [ ] `ARCHITECTURE.md` completo (§12)
-- [ ] Scripts: dev com mocks, build, preview, typecheck, lint, Playwright, Lighthouse (§12)
-- [ ] Lockfile, assets, mocks, fixtures, testes e config de auditoria versionados (§12)
-- [ ] Executa de checkout limpo, sem serviço privado (§12)
+- [x] `README.md` da solução (enunciado já movido para `docs/DESAFIO.md`) (§12)
+- [x] `ARCHITECTURE.md` completo (§12)
+- [x] Scripts: dev com mocks, build, preview, typecheck, lint, Playwright, Lighthouse (§12)
+- [x] Lockfile, assets, mocks, fixtures, testes e config de auditoria versionados (§12)
+- [x] Executa de checkout limpo, sem serviço privado (§12)
 
 ## Entrega (§12)
 

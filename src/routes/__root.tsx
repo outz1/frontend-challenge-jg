@@ -17,10 +17,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootLayout() {
-  // Na tela de detalhe o mobile usa a buy bar no lugar da tab bar (Figma 15:5536).
+  // Na tela de detalhe o mobile usa a buy bar no lugar da tab bar (Figma 15:5536); o pagamento mobile (16:748) não tem tab bar.
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const cartCount = useCartCount()
-  const showTabBar = !pathname.startsWith('/nft/') && pathname !== '/login' && pathname !== '/signup'
+  // O recibo (/order/:id) ocupa a tela inteira no mobile: sem tab bar atrás do diálogo.
+  const showTabBar =
+    !pathname.startsWith('/nft/') && !pathname.startsWith('/order/') && pathname !== '/login' && pathname !== '/signup' && pathname !== '/checkout'
   return (
     <div className="flex min-h-dvh flex-col">
       <div className="pt-6 max-md:hidden">

@@ -5,7 +5,7 @@ Implementar o NFT Marketplace em React + TypeScript a partir do layout do Figma.
 ## Fontes (um fato, um dono)
 
 - Requisitos: `docs/DESAFIO.md` (enunciado, seções 1 a 12). Não copiar requisitos para outros arquivos, referenciar por seção (`§N`).
-- Layout: https://www.figma.com/design/E575FWu2tqtvs0HBybXIfg/Frontend-Challenge--Copy-?node-id=0-1&p=f&t=Gim2CShRhpIAE0tN-0 (fiz o fork do projeto e o acesso ja deve estar liberado)
+- Layout: https://www.figma.com/design/DWOkjTyFcXkNJxIJkueTlB/Frontend-Challenge--Copy-?node-id=0-1&p=f&t=oxGiAUzjI3dhNAf0-0 (fiz o fork do projeto e o acesso ja deve estar liberado)
 - Progresso e checklist de entrega: `docs/ESTADO.md`.
 - Decisões: `docs/decisoes/`, um arquivo por decisão, criado quando a decisão surgir.
 

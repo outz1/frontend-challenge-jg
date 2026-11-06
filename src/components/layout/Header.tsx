@@ -36,7 +36,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
           <Link
             to="/"
             activeOptions={{ exact: true, includeSearch: false }}
-            className="relative h-11 text-[16px] font-normal text-text-foreground data-[status=active]:font-bold data-[status=active]:text-text-accent"
+            className="relative flex h-11 items-center text-[16px] font-normal text-text-foreground data-[status=active]:font-bold data-[status=active]:text-text-accent"
           >
             {({ isActive }) => (
               <>

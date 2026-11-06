@@ -8,6 +8,9 @@ export type UserRecord = {
   email: string
   salt: string
   passwordHash: string
+  username: string
+  ensName: string | null
+  walletAlias: string | null
   avatarUrl: string | null
 }
 
@@ -19,6 +22,9 @@ export function buildUserFixtures(): UserRecord[] {
       email: 'ana@kurio.test',
       salt: 'kurio-salt-ana',
       passwordHash: '1cf032b454b775fa6664d257bc37f265ce10786c486a44d10489adb60c9d2446',
+      username: 'ana_colecionadora',
+      ensName: 'ana',
+      walletAlias: 'Principal',
       avatarUrl: null,
     },
     {
@@ -27,6 +33,9 @@ export function buildUserFixtures(): UserRecord[] {
       email: 'bruno@kurio.test',
       salt: 'kurio-salt-bruno',
       passwordHash: 'e532cd3f6c758aaf345e51ce5ee93d5323929ee1380c015542e55a2627cd4f56',
+      username: 'bruno_criador',
+      ensName: null,
+      walletAlias: 'Criador',
       avatarUrl: null,
     },
   ]

@@ -8,6 +8,7 @@ import {
   type Session,
   type SignupRequest,
 } from '../contracts'
+import { clearCheckoutStorage } from '@/features/checkout/storage'
 import { clearToken, getGuestId, getToken, setToken } from '@/auth/token'
 
 export const sessionKeys = { current: ['session'] as const }
@@ -89,6 +90,7 @@ export function useLogout() {
       // não deixa sessão ativa. O servidor é avisado em seguida com o token capturado.
       const token = getToken()
       clearToken()
+      clearCheckoutStorage()
       queryClient.setQueryData(sessionKeys.current, null)
       dropPrivateCache(queryClient)
       if (!token) return

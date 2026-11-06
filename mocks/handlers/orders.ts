@@ -103,12 +103,14 @@ export const orderHandlers = [
       version: 1,
       network: parsed.data.network,
       walletAddress: wallet.address,
+      walletProvider: wallet.connection.provider!,
       // Recibo: snapshot imutável do que o usuário confirmou.
       lines: fresh.lines.map((l) => {
         const nft = db.nfts.find((n) => n.id === l.nftId)!
         return {
           nftId: l.nftId,
           title: l.title,
+          tokenId: nft.tokenId,
           editionLabel: l.editionLabel,
           imageUrl: nft.image.url,
           quantity: l.quantity,

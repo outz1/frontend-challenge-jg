@@ -13,7 +13,15 @@ import { db, persist } from '../db'
 import type { UserRecord } from '../fixtures/users'
 import { applyNetwork, errorResponse } from '../network'
 
-const toProfile = (u: UserRecord): Profile => ({ id: u.id, name: u.name, email: u.email, avatarUrl: u.avatarUrl })
+const toProfile = (u: UserRecord): Profile => ({
+  id: u.id,
+  name: u.name,
+  username: u.username,
+  email: u.email,
+  ensName: u.ensName,
+  walletAlias: u.walletAlias,
+  avatarUrl: u.avatarUrl,
+})
 
 function validation(error: { issues: { path: PropertyKey[]; message: string }[] }) {
   const fieldErrors: Record<string, string[]> = {}
@@ -44,12 +52,21 @@ export const profileHandlers = [
     const parsed = updateProfileRequestSchema.safeParse(await request.json().catch(() => ({})))
     if (!parsed.success) return validation(parsed.error)
 
-    const email = parsed.data.email?.toLowerCase()
-    if (email && db.users.some((u) => u.email === email && u.id !== auth.user.id)) {
+    const email = parsed.data.email.toLowerCase()
+    if (db.users.some((u) => u.email === email && u.id !== auth.user.id)) {
       return errorResponse('email_taken', 'Este e-mail já está em uso.', { fieldErrors: { email: ['Este e-mail já está em uso.'] } })
     }
-    if (parsed.data.name) auth.user.name = parsed.data.name
-    if (email) auth.user.email = email
+    const username = parsed.data.username.toLowerCase()
+    if (db.users.some((u) => u.username.toLowerCase() === username && u.id !== auth.user.id)) {
+      return errorResponse('validation_error', 'Este nome de usuário já está em uso.', {
+        fieldErrors: { username: ['Este nome de usuário já está em uso.'] },
+      })
+    }
+    auth.user.name = parsed.data.name
+    auth.user.username = parsed.data.username
+    auth.user.email = email
+    auth.user.ensName = parsed.data.ensName
+    auth.user.walletAlias = parsed.data.walletAlias
     persist()
     return HttpResponse.json(toProfile(auth.user))
   }),
@@ -72,6 +89,16 @@ export const profileHandlers = [
     }
     // O mock guarda o arquivo como data URL no estado persistido (decisão 0002).
     auth.user.avatarUrl = `data:${file.type};base64,${toBase64(new Uint8Array(await file.arrayBuffer()))}`
+    persist()
+    return HttpResponse.json(toProfile(auth.user))
+  }),
+
+  http.delete(`${API_BASE}${endpoints.profileAvatar}`, async ({ request }) => {
+    const failure = await applyNetwork(request)
+    if (failure) return failure
+    const auth = authenticate(request)
+    if (isError(auth)) return auth
+    auth.user.avatarUrl = null
     persist()
     return HttpResponse.json(toProfile(auth.user))
   }),

@@ -2,7 +2,7 @@
 
 Este arquivo existe só porque o limite do MCP do Figma acabou. Apague-o (e a pasta `docs/figma-exports/`) quando as telas estiverem fiéis ao layout. Nada aqui entra no commit: as imagens são ignoradas pelo git.
 
-Arquivo no Figma: https://www.figma.com/design/E575FWu2tqtvs0HBybXIfg/Frontend-Challenge--Copy-?node-id=0-1
+Arquivo no Figma: https://www.figma.com/design/DWOkjTyFcXkNJxIJkueTlB/Frontend-Challenge--Copy-?node-id=0-1
 
 ## Onde colocar
 

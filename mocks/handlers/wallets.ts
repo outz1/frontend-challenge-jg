@@ -2,11 +2,11 @@ import { http, HttpResponse } from 'msw'
 import {
   API_BASE,
   connectWalletRequestSchema,
+  copyPrimaryWalletRequestSchema,
   createWalletRequestSchema,
   endpoints,
   routePatterns,
   updateWalletRequestSchema,
-  walletAddressValid,
   type Wallet,
 } from '../../src/api/contracts'
 import { authenticate, isError } from '../auth'
@@ -41,24 +41,40 @@ export const walletHandlers = [
     if (failure) return failure
     const auth = authenticate(request)
     if (isError(auth)) return auth
-    const parsed = createWalletRequestSchema.safeParse(await request.json().catch(() => ({})))
-    if (!parsed.success) return validation(parsed.error)
-
+    const body = await request.json().catch(() => ({}))
     const mine = (db.wallets[auth.user.id] ??= [])
-    if (mine.some((w) => w.kind === parsed.data.kind)) {
-      const label = parsed.data.kind === 'primary' ? 'principal' : 'secundária'
+    const kindTaken = (kind: 'primary' | 'secondary') => {
+      const label = kind === 'primary' ? 'principal' : 'secundária'
       return errorResponse('wallet_kind_taken', `Você já tem uma carteira ${label}.`, { fieldErrors: { kind: [`Já existe uma carteira ${label}.`] } })
     }
+
+    // "Igual à carteira principal": copia os dados da principal da própria conta (Figma 9:1866). Só aqui o endereço se repete.
+    const copy = copyPrimaryWalletRequestSchema.safeParse(body)
+    if (copy.success) {
+      const primary = mine.find((w) => w.kind === 'primary')
+      if (!primary) return errorResponse('validation_error', 'Cadastre a carteira principal antes.', { fieldErrors: { kind: ['Cadastre a carteira principal antes'] } })
+      if (mine.some((w) => w.kind === 'secondary')) return kindTaken('secondary')
+      const wallet: Wallet = {
+        ...primary,
+        id: `wallet-${crypto.randomUUID().slice(0, 8)}`,
+        kind: 'secondary',
+        connection: { status: 'disconnected', network: null, provider: null, connectedAt: null },
+      }
+      mine.push(wallet)
+      persist()
+      return HttpResponse.json(wallet, { status: 201 })
+    }
+
+    const parsed = createWalletRequestSchema.safeParse(body)
+    if (!parsed.success) return validation(parsed.error)
+    if (mine.some((w) => w.kind === parsed.data.kind)) return kindTaken(parsed.data.kind)
     if (mine.some((w) => w.address.toLowerCase() === parsed.data.address.toLowerCase())) {
       return errorResponse('validation_error', 'Este endereço já está cadastrado.', { fieldErrors: { address: ['Este endereço já está cadastrado.'] } })
     }
     const wallet: Wallet = {
       id: `wallet-${crypto.randomUUID().slice(0, 8)}`,
-      kind: parsed.data.kind,
-      network: parsed.data.network,
-      address: parsed.data.address,
-      label: parsed.data.label || null,
-      connection: { status: 'disconnected', network: null, connectedAt: null },
+      ...parsed.data,
+      connection: { status: 'disconnected', network: null, provider: null, connectedAt: null },
     }
     mine.push(wallet)
     persist()
@@ -75,18 +91,17 @@ export const walletHandlers = [
     const parsed = updateWalletRequestSchema.safeParse(await request.json().catch(() => ({})))
     if (!parsed.success) return validation(parsed.error)
 
-    const network = parsed.data.network ?? wallet.network
-    const address = parsed.data.address ?? wallet.address
-    if (!walletAddressValid(network, address)) {
-      return errorResponse('validation_error', 'Endereço inválido para a rede selecionada.', {
-        fieldErrors: { address: ['Endereço inválido para a rede selecionada'] },
-      })
+    const { network, address, ...rest } = parsed.data
+    const mine = db.wallets[auth.user.id] ?? []
+    // Uma secundária copiada da principal mantém o mesmo endereço; só um endereço novo precisa ser inédito.
+    if (address !== wallet.address && mine.some((w) => w.id !== wallet.id && w.address.toLowerCase() === address.toLowerCase())) {
+      return errorResponse('validation_error', 'Este endereço já está cadastrado.', { fieldErrors: { address: ['Este endereço já está cadastrado.'] } })
     }
-    wallet.network = network
-    wallet.address = address
-    if (parsed.data.label !== undefined) wallet.label = parsed.data.label || null
     // Mudar rede ou endereço derruba a conexão: precisa reconectar.
-    if (parsed.data.network || parsed.data.address) wallet.connection = { status: 'disconnected', network: null, connectedAt: null }
+    if (network !== wallet.network || address !== wallet.address) {
+      wallet.connection = { status: 'disconnected', network: null, provider: null, connectedAt: null }
+    }
+    Object.assign(wallet, { network, address, ...rest })
     persist()
     return HttpResponse.json(wallet)
   }),
@@ -107,7 +122,7 @@ export const walletHandlers = [
       setScenario('default')
       return errorResponse('wallet_rejected', 'A conexão foi recusada na carteira.')
     }
-    wallet.connection = { status: 'connected', network: parsed.data.network, connectedAt: new Date().toISOString() }
+    wallet.connection = { status: 'connected', network: parsed.data.network, provider: parsed.data.provider, connectedAt: new Date().toISOString() }
     persist()
     return HttpResponse.json(wallet)
   }),
@@ -119,7 +134,7 @@ export const walletHandlers = [
     if (isError(auth)) return auth
     const wallet = ownWallet(auth.user.id, String(params.id))
     if (wallet instanceof Response) return wallet
-    wallet.connection = { status: 'disconnected', network: null, connectedAt: null }
+    wallet.connection = { status: 'disconnected', network: null, provider: null, connectedAt: null }
     persist()
     return HttpResponse.json(wallet)
   }),

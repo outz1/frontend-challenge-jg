@@ -128,6 +128,8 @@ function Summary({
   loading: boolean
   failed: boolean
 }) {
+  // Sem cotação ou com item indisponível o checkout não abre: o servidor decidiria o mesmo (§3).
+  const blocked = !quote || quote.issues.some((issue) => issue.kind === 'unavailable')
   return (
     <aside aria-labelledby="summary-title" className="flex h-fit flex-col gap-5 bg-surface-card p-5">
       <h2 id="summary-title" className="text-[18px] leading-4 font-bold text-text-foreground">
@@ -169,14 +171,15 @@ function Summary({
         </>
       )}
 
-      <button
-        type="button"
-        aria-disabled="true"
-        title="O pagamento chega no próximo bloco"
-        className="h-[50px] w-full cursor-not-allowed rounded-[10px] bg-brand text-[16px] font-bold text-ink opacity-60"
-      >
-        Finalizar compra
-      </button>
+      {blocked ? (
+        <button type="button" aria-disabled="true" className="h-[50px] w-full cursor-not-allowed rounded-[10px] bg-brand text-[16px] font-bold text-ink opacity-60">
+          Finalizar compra
+        </button>
+      ) : (
+        <Link to="/checkout" className="grid h-[50px] w-full place-items-center rounded-[10px] bg-brand text-[16px] font-bold text-ink">
+          Finalizar compra
+        </Link>
+      )}
     </aside>
   )
 }

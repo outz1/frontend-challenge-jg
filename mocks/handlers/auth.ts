@@ -13,6 +13,12 @@ import { db, persist } from '../db'
 import type { UserRecord } from '../fixtures/users'
 import { applyNetwork, errorResponse } from '../network'
 
+/** Usuário inicial derivado do e-mail: só letras, números e `_`, de 3 a 20 caracteres. */
+function defaultUsername(email: string) {
+  const base = email.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '_').slice(0, 20)
+  return base.length >= 3 ? base : `${base}_user`.slice(0, 20)
+}
+
 const toUser = (u: UserRecord) => ({ id: u.id, name: u.name, email: u.email, avatarUrl: u.avatarUrl })
 
 function fieldErrors(error: { issues: { path: PropertyKey[]; message: string }[] }) {
@@ -46,6 +52,9 @@ export const authHandlers = [
       email,
       salt,
       passwordHash: await hashPassword(salt, parsed.data.password),
+      username: defaultUsername(email),
+      ensName: null,
+      walletAlias: null,
       avatarUrl: null,
     }
     db.users.push(user)

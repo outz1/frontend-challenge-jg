@@ -46,6 +46,7 @@ function toSummary(record: NftRecord): NftSummary {
     priceEth: record.priceEth,
     compareAtEth: record.compareAtEth,
     soldOut: record.soldOut,
+    rare: record.rare,
     createdAt: record.createdAt,
     version: record.version,
   }

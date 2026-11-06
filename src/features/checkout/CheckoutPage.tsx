@@ -90,11 +90,11 @@ function Checkout({ user }: { user: User }) {
           </nav>
         </>
       ) : (
-        <div className="mb-4 flex items-center gap-6">
+        <div className="mb-4 flex h-11 items-start gap-6">
           <Link to="/cart" aria-label="Voltar ao carrinho" className={ROUND_BTN}>
             <img src={backArrow} alt="" width={13} height={7} className="block rotate-90" />
           </Link>
-          <h1 id="checkout-title" className="text-[20px] leading-4 font-bold text-text-foreground">
+          <h1 id="checkout-title" className="mt-[9px] text-[20px] leading-4 font-bold text-text-foreground">
             Pagamento com carteira
           </h1>
         </div>
@@ -140,7 +140,7 @@ function Checkout({ user }: { user: User }) {
               <div className="flex flex-col gap-5">
                 <DesktopSummary quote={quote.data} items={items} loading={quote.isPending} failed={quote.isError} onRetry={() => void quote.refetch()} />
                 <ProviderOptions form={form} tone="desktop" />
-                <button type="submit" aria-disabled={blocked} className={cn(CONFIRM_DESKTOP, blocked && 'cursor-not-allowed opacity-60')}>
+                <button type="submit" data-confirm-purchase aria-disabled={blocked} className={cn(CONFIRM_DESKTOP, blocked && 'cursor-not-allowed opacity-60')}>
                   Confirmar compra
                 </button>
               </div>
@@ -148,6 +148,14 @@ function Checkout({ user }: { user: User }) {
           ) : (
             <div className="flex min-h-[calc(100dvh-140px)] flex-col justify-between gap-8">
               <div className="flex flex-col gap-4">
+                {/* Sem o resumo do desktop, os avisos da cotação (item esgotado, preço) aparecem aqui. */}
+                {quote.data && quote.data.issues.length > 0 && (
+                  <ul role="status" className="flex flex-col gap-2 border border-line-soft p-3 text-[13px] leading-5 text-text-accent">
+                    {quote.data.issues.map((issue) => (
+                      <li key={`${issue.kind}-${issue.itemId ?? ''}`}>{issue.message}</li>
+                    ))}
+                  </ul>
+                )}
                 <MobileWalletCards form={form} wallets={wallets.data ?? []} />
                 <ProviderOptions form={form} tone="mobile" />
                 <div className="flex flex-col gap-3 pt-2">
@@ -165,6 +173,7 @@ function Checkout({ user }: { user: User }) {
               </div>
               <button
                 type="submit"
+                data-confirm-purchase
                 aria-disabled={blocked}
                 className={cn(
                   'flex h-[60px] w-full items-center justify-center rounded-[40px] bg-[linear-gradient(108.5deg,#d28a4c_4%,rgba(210,138,76,0.8)_122%)] text-[15px] leading-4 font-bold text-ink',

@@ -35,6 +35,8 @@ export const nftSummarySchema = z.object({
   /** Preço de referência riscado no card, quando há. */
   compareAtEth: ethSchema.nullable(),
   soldOut: z.boolean(),
+  /** Selo "RARO" do card mobile (Figma 14:5226). */
+  rare: z.boolean(),
   createdAt: isoDateSchema,
   version: z.number().int().nonnegative(),
 })

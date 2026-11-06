@@ -16,7 +16,7 @@ export const Route = createFileRoute('/login')({
 function LoginRoute() {
   const { redirect, reason } = Route.useSearch()
   return (
-    <AuthScreen title="Entrar" description="Entre na sua conta para favoritar, comprar e gerenciar seu perfil." redirect={redirect}>
+    <AuthScreen mode="login" title="Entrar" description="Entre para gerenciar sua carteira, coleção e perfil de criador." redirect={redirect}>
       <LoginForm redirect={redirect} reason={reason} />
     </AuthScreen>
   )

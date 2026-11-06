@@ -2,13 +2,13 @@
 
 Atualizado em 2026-11-06.
 
-**Situação:** Início, Detalhe, Login, Cadastro, Favoritos, Carrinho, Pagamento, Confirmação, **Perfil e Carteiras** funcionam de ponta a ponta contra o mock (decisões `0003` a `0007`). Verificado em navegador por scripts ad hoc (não versionados), em desktop (1440) e mobile (414): compra completa até o recibo; 16 cenários de falha do checkout (recusa e nova tentativa, timeout com recuperação do mesmo pedido, cotação desatualizada, edição esgotada, clique repetido, refresh com pedido pendente, conexão recusada, mudança de preço por Socket.IO durante o checkout); e 21 checagens de Perfil e Carteiras (rota privada com retorno, validação por campo, usuário em uso, senha, avatar, secundária igual à principal, isolamento entre usuários). O recibo (`/order/:orderId`, Figma `70376:239`) só abre para pedido confirmado e usa o snapshot do pedido. Tempo real: `socket.io-client` real servido pelo MSW, com descarte de duplicata e de evento antigo, reconexão com reconciliação por REST, isolamento por usuário e liberação de listeners no logout. `typecheck`, `lint` e `build` passam. Por isso os itens abaixo seguem sem `[x]`: falta a suíte Playwright versionada. Sem deploy.
+**Situação:** Início, Detalhe, Login, Cadastro, Favoritos, Carrinho, Pagamento, Confirmação, **Perfil e Carteiras** funcionam de ponta a ponta contra o mock (decisões `0003` a `0007`). Verificado em navegador por scripts ad hoc (não versionados), em desktop (1440) e mobile (414): compra completa até o recibo; 16 cenários de falha do checkout (recusa e nova tentativa, timeout com recuperação do mesmo pedido, cotação desatualizada, edição esgotada, clique repetido, refresh com pedido pendente, conexão recusada, mudança de preço por Socket.IO durante o checkout); e 21 checagens de Perfil e Carteiras (rota privada com retorno, validação por campo, usuário em uso, senha, avatar, secundária igual à principal, isolamento entre usuários). O recibo (`/order/:orderId`, Figma `70376:239`) só abre para pedido confirmado e usa o snapshot do pedido. Tempo real: `socket.io-client` real servido pelo MSW, com descarte de duplicata e de evento antigo, reconexão com reconciliação por REST, isolamento por usuário e liberação de listeners no logout. `typecheck`, `lint` e `build` passam. A suíte Playwright está versionada em `e2e/` (13 arquivos, 12 áreas do §9 mais regressão visual, desktop e mobile): `npm run test` deu **112 passados e 4 pulados** (casos só de desktop) em 2026-11-06, e os itens do §9 abaixo foram marcados com essa evidência. Os testes revelaram duas falhas reais, já corrigidas: o foco não voltava ao botão ao fechar a revisão do pedido, e o checkout mobile não avisava item indisponível. Sem deploy.
 
-**Figma:** lido e implementado: Pagamento, Confirmação, Perfil, Carteiras e a sidebar da conta. Ainda **sem leitura do Figma:** Login e Cadastro desktop (modais), Cadastro mobile e Carrinho (`11:1278`, `16:360`), que existem funcionais e precisam de passada visual. Confirmação, Perfil e Carteiras não têm frame mobile: adaptados do padrão das telas mobile existentes. `docs/TEMP-EXPORTS-FIGMA.md` ficou obsoleto e pode ser apagado.
+**Figma:** todas as telas foram lidas e comparadas com o frame em 1x (método e desvios em `docs/decisoes/0008-fidelidade-visual-e-desvios.md`): Início, Detalhe, Carrinho, Pagamento, Confirmação, Login, Cadastro, Perfil e Carteiras, em desktop e mobile. O Carrinho, o Login e o Cadastro foram reescritos nessa rodada, e o Início ganhou as promoções e o diário. Confirmação, Perfil e Carteiras não têm frame mobile: adaptados do padrão das telas mobile existentes. `docs/TEMP-EXPORTS-FIGMA.md` ficou obsoleto e pode ser apagado.
 
 **Infra de teste e auditoria (2026-11-06):** `playwright.config.ts` (desktop 1440 e mobile 390, traces, baselines em `e2e/*-snapshots`), `vercel.json` (fallback de SPA) e `lighthouse/run.mjs` (4 alvos, 3 medições, mediana, ambiente; relatórios em `lighthouse/reports/`) foram portados de `/home/edu/Desktop/jg-mockk`, um projeto de terceiro sobre o mesmo Figma, e adaptados às nossas rotas. Scripts `test`, `test:update` e `lighthouse` no `package.json`. Falta escrever os testes em `e2e/` e rodar as 3 medições oficiais. O `jg-mockk` serve só de referência: nenhum relatório, baseline ou teste dele entra aqui, porque descrevem outra implementação. Ele confirma, a partir do Figma, campos que ainda estão em aberto aqui: Perfil (nome de exibição, usuário, e-mail, ENS, apelido da carteira, avatar, senha) e Carteiras (decisão pendente, ver `docs/FIGMA.md`).
 
-**Próximo passo:** (1) suíte Playwright em `e2e/`, convertendo os scripts ad hoc acima, sobre o `playwright.config.ts`; (2) passada visual no Carrinho, Login e Cadastro com o Figma; (3) Lighthouse, `ARCHITECTURE.md`, `README.md` e deploy.
+**Próximo passo:** (1) Lighthouse, `ARCHITECTURE.md`, `README.md` e deploy.
 
 Pendências abertas: "Mercado, Criadores, Aprenda" do Header são botões inertes (fora do escopo, §3); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 
@@ -107,22 +107,22 @@ Conta e sessão (§3)
 
 Executáveis com os mocks, Chromium, viewports desktop e mobile (§9).
 
-- [ ] 1. Busca, filtros combinados, ordenação, paginação, restauração pelo histórico
-- [ ] 2. Acesso direto ao detalhe e recurso inexistente
-- [ ] 3. Cadastro, login, expiração de sessão, logout, troca de usuário
-- [ ] 4. Favoritos, com falha de mutation e recuperação
-- [ ] 5. Carrinho: quantidades, remoção, cupom, persistência após refresh e login
-- [ ] 6. Compra completa do catálogo ao recibo confirmado
-- [ ] 7. Falha de pagamento, clique repetido, timeout com recuperação do mesmo pedido
-- [ ] 8. Perfil, avatar, senha e carteiras, com erros de validação
-- [ ] 9. Mudança de preço ou disponibilidade via Socket.IO durante o checkout
-- [ ] 10. Eventos duplicados ou antigos, desconexão, retomada de pedido pendente
-- [ ] 11. Teclado, foco de diálogos, validação de formulários
-- [ ] 12. Skeletons em carga lenta, feedback de falha, nova tentativa
-- [ ] Regressão visual de início, detalhe, carrinho e pagamento, baselines versionadas, dados estáveis
+- [x] 1. Busca, filtros combinados, ordenação, paginação, restauração pelo histórico
+- [x] 2. Acesso direto ao detalhe e recurso inexistente
+- [x] 3. Cadastro, login, expiração de sessão, logout, troca de usuário
+- [x] 4. Favoritos, com falha de mutation e recuperação
+- [x] 5. Carrinho: quantidades, remoção, cupom, persistência após refresh e login
+- [x] 6. Compra completa do catálogo ao recibo confirmado
+- [x] 7. Falha de pagamento, clique repetido, timeout com recuperação do mesmo pedido
+- [x] 8. Perfil, avatar, senha e carteiras, com erros de validação
+- [x] 9. Mudança de preço ou disponibilidade via Socket.IO durante o checkout
+- [x] 10. Eventos duplicados ou antigos, desconexão, retomada de pedido pendente
+- [x] 11. Teclado, foco de diálogos, validação de formulários
+- [x] 12. Skeletons em carga lenta, feedback de falha, nova tentativa
+- [x] Regressão visual de início, detalhe, carrinho e pagamento, baselines versionadas, dados estáveis
 - [ ] Cada teste parte de estado isolado; relógio, latência e disparo de eventos controlados
-- [ ] Testes de tempo real passam pelo cliente Socket.IO; os de REST pelos handlers MSW
-- [ ] Relatório HTML e traces das falhas
+- [x] Testes de tempo real passam pelo cliente Socket.IO; os de REST pelos handlers MSW
+- [x] Relatório HTML e traces das falhas
 
 ## Acessibilidade (5)
 

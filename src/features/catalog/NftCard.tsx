@@ -32,6 +32,11 @@ export function NftCard({ nft, priority = false }: { nft: NftSummary; priority?:
             nft.soldOut && 'opacity-60',
           )}
         />
+        {nft.rare && !nft.soldOut && (
+          <span className="absolute top-4 left-0 flex h-6 items-center bg-brand px-2 text-[13px] leading-4 font-medium text-ink md:hidden">
+            RARO
+          </span>
+        )}
         {nft.soldOut && (
           <span className="absolute top-4 left-0 flex h-8 items-center bg-brand px-2 text-[13px] leading-4 font-medium text-ink">
             ESGOTADO

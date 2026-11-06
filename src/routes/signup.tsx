@@ -13,7 +13,7 @@ export const Route = createFileRoute('/signup')({
 function SignupRoute() {
   const { redirect } = Route.useSearch()
   return (
-    <AuthScreen title="Criar conta" description="Crie sua conta de colecionador na Kurio." redirect={redirect}>
+    <AuthScreen mode="signup" title="Criar perfil de colecionador" description="Crie seu perfil de colecionador e conecte uma carteira quando quiser." redirect={redirect}>
       <SignupForm redirect={redirect} />
     </AuthScreen>
   )

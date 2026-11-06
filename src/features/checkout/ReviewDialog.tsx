@@ -52,6 +52,11 @@ export function ReviewDialog(props: Props) {
         // Enquanto envia ou aguarda o pagamento não há como fechar: o pedido já está em andamento.
         onEscapeKeyDown={(e) => locked && e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
+        // O diálogo abre por estado, não por um gatilho Radix: devolve o foco ao botão que o abriu (§8).
+        onCloseAutoFocus={(e) => {
+          e.preventDefault()
+          document.querySelector<HTMLElement>('[data-confirm-purchase]')?.focus()
+        }}
       >
         {orderId ? <OrderProgress userId={props.userId} orderId={orderId} order={order} onRetry={props.onRetryAfterRejection} /> : <Review {...props} />}
       </DialogContent>

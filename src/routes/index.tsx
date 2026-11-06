@@ -1,6 +1,7 @@
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router'
 import { Hero } from '@/features/catalog/Hero'
 import { CatalogPage } from '@/features/catalog/CatalogPage'
+import { Journal, Promos } from '@/features/catalog/HomeSections'
 import { CATALOG_SEARCH_DEFAULTS, validateCatalogSearch } from '@/features/catalog/search'
 
 export const Route = createFileRoute('/')({
@@ -15,6 +16,11 @@ function HomePage() {
     <>
       <Hero />
       <CatalogPage />
+      {/* Figma 2:2: 96 px entre o catálogo, as promoções e o diário, e 120 px até o rodapé. */}
+      <div className="mt-24 flex flex-col gap-24 pb-14">
+        <Promos />
+        <Journal />
+      </div>
     </>
   )
 }

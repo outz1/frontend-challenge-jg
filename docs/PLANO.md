@@ -29,7 +29,7 @@ Estado: 16 cenários verificados em navegador (ver `docs/ESTADO.md`). Continuam 
 - Itens da sidebar fora do escopo (Atividade, Ofertas, Downloads, Suporte) avisam que não concluem ação e nunca aparentam sucesso.
 - Falta uma query de perfil em `src/api/queries/`; a de carteiras já existe (`wallets.ts`).
 
-### 3. Passada visual em Carrinho, Login e Cadastro
+### 3. Passada visual em Carrinho, Login e Cadastro (feito, ver `docs/decisoes/0008-fidelidade-visual-e-desvios.md`)
 
 - Carrinho `11:1278` e `16:360`, Login (modal `70381:239`, mobile `16:1022`), Cadastro (modal `70383:239`, mobile `16:1228`).
 - Login e Cadastro são modais no desktop e telas cheias no mobile; as rotas precisam funcionar em acesso direto nos dois casos.
@@ -42,7 +42,7 @@ Estado: 16 cenários verificados em navegador (ver `docs/ESTADO.md`). Continuam 
 - "Mercado, Criadores, Aprenda" do Header são botões inertes por escopo (§3).
 - Login falhou uma vez em um script ad hoc e passou nas tentativas seguintes; causa não investigada.
 
-### 5. Suíte Playwright (eliminatório, §9)
+### 5. Suíte Playwright (eliminatório, §9) (feito: 112 passados)
 
 - `playwright.config.ts` já existe (desktop 1440, mobile 390, traces, baselines em `e2e/*-snapshots`). Falta escrever `e2e/`.
 - 12 áreas de §9, cada teste com estado isolado, relógio, latência e eventos controlados. Tempo real passa pelo cliente Socket.IO; REST pelos handlers MSW.

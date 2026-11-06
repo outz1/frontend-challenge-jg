@@ -31,7 +31,7 @@ export function Footer() {
   return (
     <footer className="mt-16 w-full">
       <div className="bg-surface-card">
-        <div className="mx-auto grid w-full max-w-page gap-8 p-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+        <div className="mx-auto grid w-full max-w-page gap-8 px-8 pt-8 pb-4 md:grid-cols-2 lg:grid-cols-[265px_265px_266px_1fr] lg:gap-0">
           {HIGHLIGHTS.map((item, index) => (
             <section
               key={item.title}
@@ -77,7 +77,7 @@ export function Footer() {
           <div className="flex flex-col gap-8">
             <section className="flex flex-col gap-5">
               <h2 className="text-[18px] leading-4 font-bold text-text-foreground">Redes sociais</h2>
-              <ul className="flex gap-[10px]">
+              <ul className="flex gap-2">
                 {SOCIALS.map((social) => (
                   <li key={social.name}>
                     <button
@@ -94,9 +94,9 @@ export function Footer() {
               </ul>
             </section>
             <section className="flex flex-col gap-3">
-              <h2 className="text-[18px] leading-4 font-bold text-text-foreground">Carteiras compatíveis</h2>
-              <p className="rounded-[6px] border border-line-soft bg-surface-dark px-2 py-2 text-center text-[9px] font-bold tracking-[0.1px] whitespace-pre text-text-accent">
-                METAMASK • WALLETCONNECT • COINBASE
+              <h2 className="text-[18px] leading-4 font-bold whitespace-nowrap text-text-foreground">Carteiras compatíveis</h2>
+              <p className="rounded-[6px] border border-line-soft bg-surface-dark px-2 py-[5px] text-center text-[9px] leading-[13px] font-bold tracking-[0.1px] whitespace-pre text-text-accent">
+                METAMASK  •  WALLETCONNECT  •  COINBASE
               </p>
             </section>
           </div>

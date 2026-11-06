@@ -33,14 +33,14 @@ export function Gallery({ nft }: { nft: Nft }) {
         ))}
       </ul>
 
-      <div className="relative aspect-square w-full rounded-[6px] bg-surface-card p-4 lg:size-[444px] lg:shrink-0">
+      <div className="relative grid aspect-square w-full place-items-center rounded-[6px] bg-surface-card p-4 lg:size-[444px] lg:shrink-0">
         <img
           src={current.url}
           alt={current.alt}
           width={404}
           height={404}
           fetchPriority="high"
-          className="size-full rounded-[24px] object-cover"
+          className="size-full rounded-[24px] object-cover lg:size-[404px]"
         />
         <Sheet>
           <SheetTrigger

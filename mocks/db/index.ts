@@ -53,7 +53,7 @@ type Persisted = {
 }
 
 const STORAGE_KEY = 'kurio:mock-db'
-const SCHEMA = 6
+const SCHEMA = 7
 
 function seed(): Persisted {
   return {

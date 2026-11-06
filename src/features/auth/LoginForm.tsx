@@ -49,13 +49,13 @@ export function LoginForm({ redirect, reason }: Props) {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-10">
+    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-10 md:gap-0">
       {reason === 'expired' && (
-        <p role="status" className="rounded-[10px] border border-line-soft px-4 py-3 text-[13px] leading-5 text-text-accent">
+        <p role="status" className="rounded-[10px] border border-line-soft px-4 py-3 text-[13px] leading-5 text-text-accent md:mx-20 md:mt-6 md:rounded-[5px]">
           Sua sessão expirou. Entre novamente para continuar de onde parou.
         </p>
       )}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 md:px-20 md:pt-6">
         <TextField
           label="E-mail"
           type="email"
@@ -82,7 +82,7 @@ export function LoginForm({ redirect, reason }: Props) {
       </div>
 
       {formError && (
-        <p role="alert" className="-mt-6 text-[13px] leading-5 text-coral">
+        <p role="alert" className="-mt-6 text-[13px] leading-5 text-coral md:mx-20 md:mt-3">
           {formError}
         </p>
       )}
@@ -90,18 +90,18 @@ export function LoginForm({ redirect, reason }: Props) {
       <button
         type="submit"
         aria-disabled={login.isPending}
-        className="h-[60px] w-full rounded-[10px] bg-brand text-[16px] leading-4 font-bold text-ink aria-disabled:opacity-70"
+        className="h-[60px] w-full rounded-[10px] bg-brand text-[16px] leading-4 font-bold text-ink aria-disabled:opacity-70 md:mt-6 md:h-[45px] md:w-[calc(100%-160px)] md:self-center md:rounded-[5px]"
       >
         {login.isPending ? 'Entrando…' : 'Entrar'}
       </button>
 
       <SocialBlock onUnavailable={() => setNotice(UNAVAILABLE_NOTICE)} />
       {/* Região viva sempre presente; sem aviso ela não ocupa espaço. */}
-      <p role="status" className={notice ? '-mt-6 text-center text-[13px] leading-4 text-text-secondary' : 'sr-only'}>
+      <p role="status" className={notice ? '-mt-6 text-center text-[13px] leading-4 text-text-secondary md:mt-3' : 'sr-only'}>
         {notice}
       </p>
 
-      <p className="text-center text-[15px] text-text-secondary">
+      <p className="text-center text-[15px] text-text-secondary md:hidden">
         Novo na Kurio?{' '}
         <Link to="/signup" search={{ redirect }} replace className="underline underline-offset-4">
           Crie uma conta

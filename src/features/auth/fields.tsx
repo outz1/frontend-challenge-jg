@@ -11,7 +11,7 @@ type FieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> & {
 }
 
 const INPUT =
-  'h-[50px] w-full rounded-[10px] border bg-transparent px-4 text-[14px] leading-4 text-text-foreground placeholder:text-brand-secondary'
+  'h-[50px] w-full rounded-[10px] border bg-transparent px-4 text-[14px] leading-4 text-text-foreground placeholder:text-brand-secondary md:h-10 md:rounded-[5px] focus-visible:outline-none'
 
 export function TextField({ label, error, hint, className, ...props }: FieldProps) {
   const id = useId()
@@ -45,7 +45,7 @@ export function PasswordField({ label, error, hint, className, ...props }: Field
       </label>
       <div
         className={cn(
-          'flex h-[50px] items-center rounded-[10px] border pr-4',
+          'flex h-[50px] items-center rounded-[10px] border pr-4 md:h-10 md:rounded-[5px]',
           error ? 'border-coral' : 'border-line focus-within:border-brand',
           className,
         )}
@@ -56,7 +56,7 @@ export function PasswordField({ label, error, hint, className, ...props }: Field
           aria-invalid={error ? true : undefined}
           aria-describedby={error || hint ? messageId : undefined}
           placeholder={props.placeholder ?? label}
-          className="h-full min-w-0 flex-1 rounded-[10px] bg-transparent px-4 text-[14px] leading-4 text-text-foreground placeholder:text-brand-secondary"
+          className="h-full min-w-0 flex-1 rounded-[10px] bg-transparent px-4 text-[14px] leading-4 text-text-foreground placeholder:text-brand-secondary focus-visible:outline-none md:rounded-[5px]"
           {...props}
         />
         <button

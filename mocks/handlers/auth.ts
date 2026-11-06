@@ -13,10 +13,16 @@ import { db, persist } from '../db'
 import type { UserRecord } from '../fixtures/users'
 import { applyNetwork, errorResponse } from '../network'
 
-/** Usuário inicial derivado do e-mail: só letras, números e `_`, de 3 a 20 caracteres. */
-function defaultUsername(email: string) {
-  const base = email.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '_').slice(0, 20)
-  return base.length >= 3 ? base : `${base}_user`.slice(0, 20)
+/**
+ * Usuário inicial: o "Nome de usuário" digitado no cadastro, normalizado para letras, números e `_`
+ * (3 a 20 caracteres); se sobrar pouco, vem da parte local do e-mail.
+ */
+function defaultUsername(name: string, email: string) {
+  const clean = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 20)
+  const fromName = clean(name)
+  if (fromName.length >= 3) return fromName
+  const fromEmail = clean(email.split('@')[0])
+  return fromEmail.length >= 3 ? fromEmail : `${fromEmail}_user`.slice(0, 20)
 }
 
 const toUser = (u: UserRecord) => ({ id: u.id, name: u.name, email: u.email, avatarUrl: u.avatarUrl })
@@ -52,7 +58,7 @@ export const authHandlers = [
       email,
       salt,
       passwordHash: await hashPassword(salt, parsed.data.password),
-      username: defaultUsername(email),
+      username: defaultUsername(parsed.data.name, email),
       ensName: null,
       walletAlias: null,
       avatarUrl: null,

@@ -47,7 +47,7 @@ export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase 
         <div className="flex flex-col gap-8 lg:flex-row">
           <Gallery nft={nft} />
 
-          <div className="flex min-w-0 flex-1 flex-col justify-between gap-6 lg:min-h-[448px]">
+          <div className="flex min-w-0 flex-1 flex-col justify-between gap-3 lg:h-[448px]">
             <div className="flex flex-col gap-3">
               <h1 id="nft-title" className="text-[28px] font-bold text-text-foreground">
                 {nft.title}
@@ -62,17 +62,17 @@ export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase 
                   </span>
                 </p>
               </div>
-              <hr className="border-0 border-t-[0.3px] border-brand" />
+              <hr className="h-px border-0 bg-brand/30" />
             </div>
 
             <div className="flex flex-col gap-3">
               <h2 className="text-[15px] leading-4 font-bold text-text-foreground">Sobre este NFT:</h2>
-              <p className="text-body text-text-secondary">{nft.description}</p>
+              <p className="h-[66px] text-body text-text-secondary">{nft.description}</p>
             </div>
 
             <EditionPicker editions={nft.editions} value={edition.id} onChange={purchase.selectEdition} />
 
-            <div className="flex flex-col gap-2">
+            <div className="relative">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <QuantityStepper value={quantity} max={max} onChange={purchase.setQuantity} />
                 <div className="flex items-center gap-2">
@@ -87,7 +87,8 @@ export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase 
                   <FavoriteButton nftId={nft.id} />
                 </div>
               </div>
-              <p role="status" className={cn('min-h-5 text-[14px] leading-5 text-text-accent', !limit && 'sr-only')}>
+              {/* O aviso de limite não ocupa espaço no fluxo: a coluna mantém os 448 px do Figma. */}
+              <p role="status" className={cn('absolute top-full left-0 mt-1 text-[14px] leading-5 text-text-accent', !limit && 'sr-only')}>
                 {limit}
               </p>
             </div>
@@ -137,21 +138,21 @@ export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase 
               Avaliações de colecionadores ({nft.rating.count})
             </button>
           </div>
-          <hr className="border-0 border-t-[0.3px] border-brand" />
+          <hr className="h-px border-0 bg-brand/30" />
         </div>
         <div className="flex flex-col gap-3 text-body text-text-secondary">
           {nft.about.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
-          <h3 className="mt-3 font-bold text-text-foreground">Rede:</h3>
+          <h3 className="mt-3 -mb-3 font-bold text-text-foreground">Rede:</h3>
           <p>
             Cunhado na {networkName(nft.network)} com procedência imutável e metadados armazenados no IPFS.
           </p>
-          <h3 className="font-bold text-text-foreground">Contrato:</h3>
+          <h3 className="-mb-3 font-bold text-text-foreground">Contrato:</h3>
           <p>
             {nft.contract.address} • Contrato inteligente {nft.contract.standard} verificado.
           </p>
-          <h3 className="font-bold text-text-foreground">Direitos autorais:</h3>
+          <h3 className="-mb-3 font-bold text-text-foreground">Direitos autorais:</h3>
           <p>
             Direitos autorais do criador: {nft.contract.royaltyPercent}% nas vendas secundárias, pagos automaticamente
             pelos mercados compatíveis.

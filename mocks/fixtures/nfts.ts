@@ -28,13 +28,14 @@ type Seed = {
   cents: number
   compareAtCents?: number
   soldOut?: boolean
+  rare?: boolean
 }
 
 /** As 9 primeiras reproduzem a primeira página do Figma (70342:2828), na ordem. */
 const FIGMA_SEEDS: Seed[] = [
   { title: 'Emerald Ape #042', creator: 'Marina Costa', collection: 'arte-digital', network: 'ethereum', art: 'emerald', cents: 119 },
   { title: 'Sage Nomad #009', creator: 'Teo Almeida', collection: 'arte-digital', network: 'ethereum', art: 'sage', cents: 169 },
-  { title: 'Neon Vessel #552', creator: 'Lia Duarte', collection: 'generativa', network: 'polygon', art: 'neon', cents: 199, compareAtCents: 229 },
+  { title: 'Neon Vessel #552', creator: 'Lia Duarte', collection: 'generativa', network: 'polygon', art: 'neon', cents: 199, compareAtCents: 229, rare: true },
   { title: 'Cosmic Bloom #118', creator: 'Marina Costa', collection: 'arte-3d', network: 'solana', art: 'sage', cents: 129 },
   { title: 'Violet Nomad #314', creator: 'Teo Almeida', collection: 'colecionaveis', network: 'ethereum', art: 'sage', cents: 139 },
   { title: 'Ivory Baron #088', creator: 'Caio Ramos', collection: 'fotografia', network: 'polygon', art: 'neon', cents: 179 },
@@ -123,6 +124,7 @@ export function buildNftFixtures(): NftRecord[] {
       priceEth: eth(seed.cents),
       compareAtEth: seed.compareAtCents ? eth(seed.compareAtCents) : null,
       soldOut: seed.soldOut === true,
+      rare: seed.rare === true,
       createdAt: new Date(BASE_TIME - index * DAY_MS).toISOString(),
       version: 1,
       description: `Um colecionável digital finalizado à mão da coleção Kurio Editions, verificado na ${NETWORK_LABEL[seed.network]}, com arte desbloqueável e acesso para colecionadores.`,

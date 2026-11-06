@@ -7,6 +7,8 @@ export const cartItemSchema = z.object({
   nftId: z.string(),
   editionId: z.string(),
   title: z.string(),
+  /** `#0042`: a tabela do carrinho mostra "ID do token" (Figma 11:2020). */
+  tokenId: z.string(),
   editionLabel: z.string(),
   image: nftImageSchema,
   quantity: quantitySchema,

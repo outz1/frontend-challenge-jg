@@ -16,9 +16,10 @@ export function OrderLines({ quote, items }: { quote: Quote; items: CartItem[] }
             ) : (
               <div aria-hidden="true" className="size-[66px] shrink-0 rounded-[8px] bg-surface-dark" />
             )}
-            <div className="flex min-w-0 flex-1 flex-col gap-[6px] leading-4">
-              <p className="truncate text-[16px] font-bold text-text-foreground">{line.title}</p>
-              <p className="truncate text-[14px] text-brand-secondary">Edição {line.editionLabel}</p>
+            <div className="flex min-w-0 flex-1 flex-col gap-1 leading-4">
+              <p className="truncate text-[14px] font-bold text-text-foreground">{line.title}</p>
+              {item && <p className="truncate text-[12px] text-brand-secondary">ID do token: {item.tokenId}</p>}
+              <p className="truncate text-[12px] text-text-secondary">Edição {line.editionLabel}</p>
             </div>
             <div className="flex shrink-0 items-center gap-4 leading-4">
               <p className="text-[14px] text-text-secondary">(x {line.quantity})</p>

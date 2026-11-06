@@ -55,6 +55,7 @@ export function toCartResponse(cart: CartRecord): Cart {
       nftId: line.nftId,
       editionId: line.editionId,
       title: found.nft.title,
+      tokenId: found.nft.tokenId,
       editionLabel: found.edition.label,
       image: found.nft.image,
       quantity: line.quantity,

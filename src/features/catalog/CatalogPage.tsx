@@ -22,7 +22,7 @@ export function CatalogPage() {
     <section
       id="catalogo"
       aria-labelledby="catalogo-titulo"
-      className="mx-auto mt-4 grid w-full max-w-page gap-6 px-6 md:mt-8 md:px-4 lg:grid-cols-[310px_minmax(0,1fr)] lg:gap-x-12 min-[1240px]:px-0"
+      className="mx-auto mt-10 grid w-full max-w-page gap-6 px-6 md:mt-8 md:px-4 lg:mt-24 lg:grid-cols-[310px_minmax(0,1fr)] lg:gap-x-12 min-[1240px]:px-0"
     >
       <h2 id="catalogo-titulo" className="sr-only">
         Catálogo de NFTs
@@ -33,7 +33,7 @@ export function CatalogPage() {
         <FeaturedBanner />
       </aside>
 
-      <div className="flex min-w-0 flex-col gap-6 lg:gap-8">
+      <div className="flex min-w-0 flex-col gap-4 lg:gap-8">
         <MobileSearchBar search={search} facets={data?.facets} onChange={update} />
         <MobileHero />
         <Toolbar search={search} onSortChange={(sort) => update({ sort })} />

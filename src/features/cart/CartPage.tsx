@@ -9,7 +9,7 @@ import minusOff from '@/assets/icons/cart-m-minus-off.svg'
 import minusOn from '@/assets/icons/cart-m-minus.svg'
 import backArrow from '@/assets/icons/m-back-arrow.svg'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
 import { NftShowcase } from '@/features/nft/NftShowcase'
 import { QuantityStepper } from '@/features/nft/QuantityStepper'
 import { formatEth, withEthUnit } from '@/lib/eth'
@@ -23,7 +23,7 @@ const GRADIENT_BUTTON = 'bg-[linear-gradient(108.86deg,#d28a4c_3.96%,rgba(210,13
 const RECOMMENDED: NftListQuery = { tab: 'all', collection: [], network: [], sort: 'recent', page: 1, pageSize: 20 }
 
 export function CartPage() {
-  const desktop = useMediaQuery('(min-width: 768px)')
+  const desktop = useMediaQuery(MD_UP)
   const cart = useCart()
   const quote = useQuote(CART_NETWORK)
   // Itens do carrinho acompanham mudanças de preço e disponibilidade em tempo real (§7).

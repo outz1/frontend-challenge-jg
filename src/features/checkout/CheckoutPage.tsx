@@ -6,7 +6,7 @@ import { useSession } from '@/api/queries/session'
 import { useWallets } from '@/api/queries/wallets'
 import backArrow from '@/assets/icons/m-back-arrow.svg'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
 import { withEthUnit } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 import { useNftSubscription } from '@/realtime/useNftSubscription'
@@ -32,7 +32,7 @@ export function CheckoutPage() {
 function Checkout({ user }: { user: User }) {
   const { order: orderId } = route.useSearch()
   const navigate = useNavigate()
-  const desktop = useMediaQuery('(min-width: 768px)')
+  const desktop = useMediaQuery(MD_UP)
   const cart = useCart()
   const wallets = useWallets()
   const form = useCheckoutForm(user, wallets.data)

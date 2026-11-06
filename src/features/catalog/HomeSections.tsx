@@ -33,7 +33,7 @@ const PROMOS = [
 ] as const
 
 /** Dois cartões promocionais do Início (Figma 70353:241). Só existem no desktop; no mobile o frame não os traz. */
-export function Promos() {
+function Promos() {
   return (
     <section aria-label="Destaques" className="mx-auto hidden w-full max-w-page justify-between px-4 lg:flex min-[1240px]:px-0">
       {PROMOS.map((promo) => (
@@ -85,7 +85,7 @@ const POSTS = [
 ]
 
 /** "Diário da Cunhagem" (Figma 70343:253). Os artigos ficam fora do escopo (§3): "Ler mais" avisa que está indisponível. */
-export function Journal() {
+function Journal() {
   return (
     <section aria-labelledby="diario-titulo" className="mx-auto hidden w-full max-w-page flex-col gap-10 px-4 lg:flex min-[1240px]:px-0">
       <div className="flex flex-col items-center gap-3 text-center">
@@ -116,5 +116,15 @@ export function Journal() {
         ))}
       </ul>
     </section>
+  )
+}
+
+/** Promoções e diário juntos, exclusivos do desktop (`lg`); a rota carrega este módulo sob demanda. */
+export function DesktopSections() {
+  return (
+    <>
+      <Promos />
+      <Journal />
+    </>
   )
 }

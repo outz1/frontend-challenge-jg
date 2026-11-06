@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { TabBar } from '@/components/layout/TabBar'
 import { Toaster } from '@/components/ui/toast'
 import { RealtimeProvider } from '@/realtime/RealtimeProvider'
+import { MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -20,6 +21,8 @@ function RootLayout() {
   // Na tela de detalhe o mobile usa a buy bar no lugar da tab bar (Figma 15:5536); o pagamento mobile (16:748) não tem tab bar.
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const cartCount = useCartCount()
+  // Cabeçalho e rodapé não existem nos frames mobile: montados só a partir de `md`.
+  const md = useMediaQuery(MD_UP)
   // Recibo, carrinho e pagamento ocupam a tela inteira no mobile (o carrinho tem a folha de resumo no lugar da tab bar).
   const showTabBar =
     !pathname.startsWith('/nft/') &&
@@ -30,15 +33,19 @@ function RootLayout() {
     pathname !== '/checkout'
   return (
     <div className="flex min-h-dvh flex-col">
-      <div className="pt-6 max-md:hidden">
-        <Header cartCount={cartCount} />
-      </div>
+      {md && (
+        <div className="pt-6 max-md:hidden">
+          <Header cartCount={cartCount} />
+        </div>
+      )}
       <main id="conteudo" className={`flex-1 md:pb-0 ${showTabBar ? 'pb-[126px]' : ''}`}>
         <Outlet />
       </main>
-      <div className="max-md:hidden">
-        <Footer />
-      </div>
+      {md && (
+        <div className="max-md:hidden">
+          <Footer />
+        </div>
+      )}
       {showTabBar && <TabBar cartCount={cartCount} />}
       <Toaster />
       <RealtimeProvider />

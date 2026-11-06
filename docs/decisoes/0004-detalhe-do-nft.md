@@ -10,7 +10,7 @@ Requisitos em `docs/DESAFIO.md` §3 (Detalhes do NFT, "Catálogo e detalhe") e �
 - **Regra de limite** em `src/features/nft/purchase.ts`: máximo = menor entre disponibilidade da edição e teto por pedido; 0 é esgotada. A quantidade é derivada do limite (sem efeito de sincronização), então trocar de edição ou receber evento de estoque reclampa sozinho.
 - **Edição como radios nativos**: setas do teclado e leitura de grupo sem JS extra; esgotada fica `disabled`, riscada e com "(esgotada)" para leitores de tela.
 - **Stepper com `aria-disabled`** (não `disabled`): o foco não se perde ao atingir o limite; o valor é um `<output>` em região viva.
-- **Duas árvores no DOM**: `DesktopDetail` (≥768) e `MobileDetail` (<768), uma escondida por CSS, porque os frames são composições diferentes. Estado de compra compartilhado em `usePurchase`. Custo: imagens principais pedidas duas vezes (mesma URL, cache do navegador).
+- **Duas composições**: `DesktopDetail` (≥768) e `MobileDetail` (<768), porque os frames são composições diferentes. Estado de compra compartilhado em `usePurchase`. Originalmente as duas ficavam no DOM, uma escondida por CSS; desde `0009` só a do viewport atual é montada.
 - **Carregamento**: `loader` da rota só dispara `prefetchQuery` (sem bloquear), então o preload por intenção aquece o cache e a tela mostra skeleton com as dimensões finais. Not found (`not_found`) e falha transitória têm telas próprias, com nova tentativa.
 - **Relacionados** vêm de `GET /nfts?collection=<mesma>`; sem outros itens, a seção some.
 - **Zoom** da imagem é um diálogo (Radix): foco preso, Esc fecha, foco volta ao botão.

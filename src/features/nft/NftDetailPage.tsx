@@ -8,6 +8,7 @@ import { DetailSkeleton } from './DetailSkeleton'
 import { MobileDetail } from './MobileDetail'
 import { usePurchase } from './purchase'
 import { useNftSubscription } from '@/realtime/useNftSubscription'
+import { MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
 
 export function NftDetailPage({ nftId }: { nftId: string }) {
   const query = useQuery(nftDetailOptions(nftId))
@@ -26,12 +27,9 @@ export function NftDetailPage({ nftId }: { nftId: string }) {
 function NftDetail({ nft }: { nft: Nft }) {
   const purchase = usePurchase(nft)
   useNftSubscription([nft.id])
-  return (
-    <>
-      <DesktopDetail nft={nft} purchase={purchase} />
-      <MobileDetail nft={nft} purchase={purchase} />
-    </>
-  )
+  // Uma árvore só: no mobile a galeria desktop pedia as imagens antes (e com prioridade baixa) da imagem do LCP.
+  const desktop = useMediaQuery(MD_UP)
+  return desktop ? <DesktopDetail nft={nft} purchase={purchase} /> : <MobileDetail nft={nft} purchase={purchase} />
 }
 
 function NftNotFound() {

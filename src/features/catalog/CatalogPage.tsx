@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { LG_UP, MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
 import { nftListOptions } from '@/api/queries/nfts'
 import { EmptyState, ErrorState, NftGrid, NftGridSkeleton } from './NftGrid'
 import { FeaturedBanner } from './FeaturedBanner'
@@ -14,6 +15,10 @@ export function CatalogPage() {
   const { search, update, clearFilters } = useCatalogSearch()
   const query = useQuery(nftListOptions(toListQuery(search)))
   const { data, isPending, isError, isPlaceholderData } = query
+  // Uma composição por viewport: a sidebar (com o banner, que faz a própria requisição) só no desktop,
+  // a busca com drawer no mobile e tablet, e o banner compacto só no mobile.
+  const md = useMediaQuery(MD_UP)
+  const lg = useMediaQuery(LG_UP)
 
   const hasFilters =
     Boolean(search.q) || search.collection.length > 0 || search.network.length > 0 || Boolean(search.minPrice || search.maxPrice)
@@ -28,14 +33,16 @@ export function CatalogPage() {
         Catálogo de NFTs
       </h2>
 
-      <aside aria-label="Filtros" className="hidden flex-col gap-6 lg:flex">
-        <FiltersPanel search={search} facets={data?.facets} onChange={update} />
-        <FeaturedBanner />
-      </aside>
+      {lg && (
+        <aside aria-label="Filtros" className="hidden flex-col gap-6 lg:flex">
+          <FiltersPanel search={search} facets={data?.facets} onChange={update} />
+          <FeaturedBanner />
+        </aside>
+      )}
 
       <div className="flex min-w-0 flex-col gap-4 lg:gap-8">
-        <MobileSearchBar search={search} facets={data?.facets} onChange={update} />
-        <MobileHero />
+        {!lg && <MobileSearchBar search={search} facets={data?.facets} onChange={update} />}
+        {!md && <MobileHero />}
         <Toolbar search={search} onSortChange={(sort) => update({ sort })} />
 
         {/* Região viva: leitores de tela ouvem o resultado de busca e filtros (§8). */}

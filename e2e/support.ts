@@ -5,7 +5,7 @@ export const BRUNO = { email: 'bruno@kurio.test', password: 'Kurio@456' }
 
 export const isMobile = (info: TestInfo) => info.project.name.includes('mobile')
 
-/** Detalhe e carrinho renderizam desktop e mobile no DOM; este helper pega a ocorrência visível no viewport atual. */
+/** Pega a ocorrência visível no viewport atual quando um rótulo aparece mais de uma vez (composições mobile e desktop, diálogos). */
 export const visible = (locator: Locator) => locator.filter({ visible: true }).first()
 
 /** Cenários de rede do mock (§6). Valem para o contexto atual e persistem em localStorage. */

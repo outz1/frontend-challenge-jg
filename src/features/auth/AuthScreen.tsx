@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Link, useCanGoBack, useRouter } from '@tanstack/react-router'
 import closeIcon from '@/assets/icons/order-close.svg'
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { MD_UP, useMediaQuery } from '@/hooks/useMediaQuery'
 import { Hero } from '@/features/catalog/Hero'
 import { safeRedirect } from '@/auth/guard'
 import { cn } from '@/lib/utils'
@@ -23,7 +23,7 @@ const TAB = 'text-[20px] leading-4 font-medium'
  * fluxo anterior, ou ao Início quando não há histórico.
  */
 export function AuthScreen({ mode, title, description, redirect, children }: Props) {
-  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const isDesktop = useMediaQuery(MD_UP)
   const router = useRouter()
   const canGoBack = useCanGoBack()
 

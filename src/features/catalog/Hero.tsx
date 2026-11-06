@@ -1,4 +1,5 @@
 import heroApe from '@/assets/images/hero-ape.webp'
+import heroApe450 from '@/assets/images/hero-ape-450.webp'
 import heroDots from '@/assets/icons/hero-dots.svg'
 
 export function Hero() {
@@ -32,6 +33,8 @@ export function Hero() {
       </div>
 
       <img
+        srcSet={`${heroApe450} 450w, ${heroApe} 900w`}
+        sizes="(min-width: 1024px) 450px, 100vw"
         src={heroApe}
         alt="Macaco de óculos redondos e jaqueta verde, arte em destaque"
         width={450}

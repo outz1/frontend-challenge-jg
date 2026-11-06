@@ -21,6 +21,8 @@ export function NftCard({ nft, priority = false }: { nft: NftSummary; priority?:
         )}
       >
         <img
+          srcSet={nft.image.srcSet}
+          sizes="(min-width: 768px) 258px, 50vw"
           src={nft.image.url}
           alt={nft.image.alt}
           width={250}

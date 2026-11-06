@@ -4,18 +4,26 @@ import sageNomad from '../../src/assets/images/nft-sage-nomad.webp'
 import neonVessel from '../../src/assets/images/nft-neon-vessel.webp'
 import goldenBeat from '../../src/assets/images/nft-golden-beat.webp'
 import heroApe from '../../src/assets/images/hero-ape.webp'
+import emeraldApe450 from '../../src/assets/images/nft-emerald-ape-450.webp'
+import sageNomad450 from '../../src/assets/images/nft-sage-nomad-450.webp'
+import neonVessel450 from '../../src/assets/images/nft-neon-vessel-450.webp'
+import goldenBeat450 from '../../src/assets/images/nft-golden-beat-450.webp'
+import heroApe450 from '../../src/assets/images/hero-ape-450.webp'
 
 /** Registro do mock: o contrato público mais campos internos que nunca saem na resposta. */
 export type NftRecord = Nft & { trendingScore: number }
 
-type Art = { src: string; alt: string }
+type Art = { src: string; srcSet: string; alt: string }
+
+/** Original de 900 px e variante de 450 px (gerada por `scripts/image-variants.mjs`). */
+const variants = (small: string, large: string) => `${small} 450w, ${large} 900w`
 
 const ART: Record<string, Art> = {
-  emerald: { src: emeraldApe, alt: 'Macaco de óculos redondos e jaqueta verde' },
-  sage: { src: sageNomad, alt: 'Gorila de chapéu verde e moletom roxo' },
-  neon: { src: neonVessel, alt: 'Chimpanzé de terno claro e gola alta verde' },
-  golden: { src: goldenBeat, alt: 'Macaco laranja de fones verdes e jaqueta clara' },
-  hero: { src: heroApe, alt: 'Macaco de óculos redondos e jaqueta verde, arte em destaque' },
+  emerald: { src: emeraldApe, srcSet: variants(emeraldApe450, emeraldApe), alt: 'Macaco de óculos redondos e jaqueta verde' },
+  sage: { src: sageNomad, srcSet: variants(sageNomad450, sageNomad), alt: 'Gorila de chapéu verde e moletom roxo' },
+  neon: { src: neonVessel, srcSet: variants(neonVessel450, neonVessel), alt: 'Chimpanzé de terno claro e gola alta verde' },
+  golden: { src: goldenBeat, srcSet: variants(goldenBeat450, goldenBeat), alt: 'Macaco laranja de fones verdes e jaqueta clara' },
+  hero: { src: heroApe, srcSet: variants(heroApe450, heroApe), alt: 'Macaco de óculos redondos e jaqueta verde, arte em destaque' },
 }
 
 type Seed = {
@@ -113,7 +121,7 @@ export function buildNftFixtures(): NftRecord[] {
   return seeds.map((seed, index) => {
     const id = `nft-${String(index + 1).padStart(3, '0')}`
     const art = ART[seed.art]
-    const image = { url: art.src, alt: `${seed.title}: ${art.alt}` }
+    const image = { url: art.src, srcSet: art.srcSet, alt: `${seed.title}: ${art.alt}` }
     return {
       id,
       title: seed.title,
@@ -141,7 +149,7 @@ export function buildNftFixtures(): NftRecord[] {
         royaltyPercent: '5',
       },
       // O Figma repete a mesma arte nas miniaturas; só o texto alternativo muda.
-      gallery: [1, 2, 3, 4].map((view) => ({ url: art.src, alt: `${seed.title}, vista ${view}` })),
+      gallery: [1, 2, 3, 4].map((view) => ({ url: art.src, srcSet: art.srcSet, alt: `${seed.title}, vista ${view}` })),
       editions: buildEditions(id, seed),
       attributes: [
         { name: 'Acessório', value: ACCESSORIES[index % ACCESSORIES.length] },

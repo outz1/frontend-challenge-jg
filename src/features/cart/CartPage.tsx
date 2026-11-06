@@ -158,7 +158,7 @@ function DesktopRow({ item, line }: { item: CartItem; line: Quote['lines'][numbe
     <li aria-busy={busy} className={cn(COLUMNS, 'h-[70px] bg-surface-card pr-6', busy && 'opacity-70')}>
       <div className="flex items-center gap-4">
         <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="shrink-0">
-          <img src={item.image.url} alt={item.image.alt} width={70} height={70} className="size-[70px] rounded-[6px] object-cover" />
+          <img srcSet={item.image.srcSet} sizes="70px" src={item.image.url} alt={item.image.alt} width={70} height={70} className="size-[70px] rounded-[6px] object-cover" />
         </Link>
         <div className="flex min-w-0 flex-col gap-[6px] leading-4">
           <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="text-[16px] font-bold whitespace-nowrap text-text-foreground hover:underline">
@@ -217,7 +217,7 @@ function MobileRow({ item }: { item: CartItem }) {
   return (
     <li aria-busy={busy} className={cn('relative h-[100px] rounded-[14px] bg-surface-card shadow-[0_6px_20px_rgba(10,6,4,0.45)]', busy && 'opacity-70')}>
       <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-0 left-0">
-        <img src={item.image.url} alt={item.image.alt} width={100} height={100} className="size-[100px] rounded-[14px] object-cover" />
+        <img srcSet={item.image.srcSet} sizes="100px" src={item.image.url} alt={item.image.alt} width={100} height={100} className="size-[100px] rounded-[14px] object-cover" />
       </Link>
       <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-[13px] left-[109px] max-w-[140px] truncate text-[15px] leading-4 font-bold text-text-foreground">
         {item.title}

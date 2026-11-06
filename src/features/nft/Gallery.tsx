@@ -22,6 +22,8 @@ export function Gallery({ nft }: { nft: Nft }) {
               className={cn('block size-full rounded-[8px] border', i === index ? 'border-brand' : 'border-transparent')}
             >
               <img
+                srcSet={image.srcSet}
+                sizes="100px"
                 src={image.url}
                 alt=""
                 width={100}
@@ -35,6 +37,8 @@ export function Gallery({ nft }: { nft: Nft }) {
 
       <div className="relative grid aspect-square w-full place-items-center rounded-[6px] bg-surface-card p-4 lg:size-[444px] lg:shrink-0">
         <img
+          srcSet={current.srcSet}
+          sizes="(min-width: 1024px) 404px, calc(100vw - 64px)"
           src={current.url}
           alt={current.alt}
           width={404}

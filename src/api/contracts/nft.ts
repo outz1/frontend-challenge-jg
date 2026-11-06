@@ -21,6 +21,8 @@ export type Edition = z.infer<typeof editionSchema>
 export const nftImageSchema = z.object({
   url: z.string(),
   alt: z.string(),
+  /** Variantes por largura (`srcset`), para o navegador baixar só o tamanho que o layout exibe. */
+  srcSet: z.string().optional(),
 })
 
 export const nftSummarySchema = z.object({

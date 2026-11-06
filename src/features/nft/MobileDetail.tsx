@@ -34,6 +34,8 @@ export function MobileDetail({ nft, purchase }: { nft: Nft; purchase: Purchase }
           <FavoriteIconButton nftId={nft.id} title={nft.title} />
         </div>
         <img
+          srcSet={image.srcSet}
+          sizes="calc(100vw - 52px)"
           src={image.url}
           alt={image.alt}
           width={361}

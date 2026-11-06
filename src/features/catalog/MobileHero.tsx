@@ -1,5 +1,7 @@
 import heroApe from '@/assets/images/hero-ape.webp'
+import heroApe450 from '@/assets/images/hero-ape-450.webp'
 import sageNomad from '@/assets/images/nft-sage-nomad.webp'
+import sageNomad450 from '@/assets/images/nft-sage-nomad-450.webp'
 import mask from '@/assets/icons/m-hero-mask.svg'
 import arrowRight from '@/assets/icons/m-arrow-right.svg'
 import dots from '@/assets/icons/m-hero-dots.svg'
@@ -31,6 +33,8 @@ export function MobileHero() {
           </div>
           <div className="relative size-[138px] shrink-0">
             <img
+              srcSet={`${heroApe450} 450w, ${heroApe} 900w`}
+              sizes="138px"
               src={heroApe}
               alt="Macaco de óculos redondos e jaqueta verde, arte em destaque"
               width={138}
@@ -39,6 +43,8 @@ export function MobileHero() {
               className="size-[138px] rounded-[16px] object-cover"
             />
             <img
+              srcSet={`${sageNomad450} 450w, ${sageNomad} 900w`}
+              sizes="58px"
               src={sageNomad}
               alt=""
               width={58}

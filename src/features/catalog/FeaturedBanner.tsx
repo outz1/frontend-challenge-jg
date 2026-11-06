@@ -26,6 +26,8 @@ export function FeaturedBanner() {
             className="relative block h-[368px] w-full"
           >
             <img
+              srcSet={data.spotlight.image.srcSet}
+              sizes="310px"
               src={data.spotlight.image.url}
               alt={data.spotlight.image.alt}
               width={310}

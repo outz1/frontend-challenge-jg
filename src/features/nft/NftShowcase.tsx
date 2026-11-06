@@ -64,6 +64,8 @@ export function NftShowcase({ id, title, query, exclude = [], variant = 'detail'
                 <Link to="/nft/$nftId" params={{ nftId: item.id }} className="group flex flex-col gap-2">
                   <div className={cn('h-[255px] bg-surface-card', variant === 'cart' ? 'grid place-items-center' : 'px-1 pt-4 pb-7')}>
                     <img
+                      srcSet={item.image.srcSet}
+                      sizes="213px"
                       src={item.image.url}
                       alt={item.image.alt}
                       width={213}

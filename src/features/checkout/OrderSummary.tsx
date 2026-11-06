@@ -12,7 +12,7 @@ export function OrderLines({ quote, items }: { quote: Quote; items: CartItem[] }
         return (
           <li key={line.itemId} className="flex h-[70px] items-center gap-2 bg-surface-card pr-4 pl-1">
             {item ? (
-              <img src={item.image.url} alt={item.image.alt} width={66} height={66} className="size-[66px] shrink-0 rounded-[8px] object-cover" />
+              <img srcSet={item.image.srcSet} sizes="66px" src={item.image.url} alt={item.image.alt} width={66} height={66} className="size-[66px] shrink-0 rounded-[8px] object-cover" />
             ) : (
               <div aria-hidden="true" className="size-[66px] shrink-0 rounded-[8px] bg-surface-dark" />
             )}

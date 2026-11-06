@@ -1,6 +1,10 @@
 @import 'tailwindcss';
 @import './tokens.css';
 
+/* Relatórios do Lighthouse e do Playwright são evidências, não fontes de classes. */
+@source not "../../lighthouse/reports";
+@source not "../../playwright-report";
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

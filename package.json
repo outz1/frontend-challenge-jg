@@ -51,7 +51,10 @@
     "build": "tsr generate && tsc --noEmit && vite build --mode mocks",
     "preview": "vite preview --port 4173",
     "typecheck": "tsr generate && tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "playwright test",
+    "test:update": "playwright test --update-snapshots",
+    "lighthouse": "node lighthouse/run.mjs"
   },
   "msw": {
     "workerDirectory": [

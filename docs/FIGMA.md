@@ -51,7 +51,7 @@ Arquivo de trabalho (cópia editável): https://www.figma.com/design/E575FWu2tqt
 | Buy bar do detalhe | `70396:245` |
 | Resumo de pagamento do carrinho | `70397:245` |
 | Opções de carteira e rede | `70398:244` |
-| Bloco de login social | `70522:3186` |
+| Bloco de login social | `70522:3186
 
 ## Tokens
 

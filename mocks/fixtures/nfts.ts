@@ -79,12 +79,28 @@ function eth(cents: number): string {
 function buildEditions(id: string, seed: Seed): Edition[] {
   const open = seed.cents
   const soldOut = seed.soldOut === true
+  // Ordem do seletor no Figma (70342:2696): 1/1, 1/10, 1/50, ABERTA.
   return [
-    { id: `${id}-open`, label: 'ABERTA', kind: 'open', supply: null, available: soldOut ? 0 : null, maxPerOrder: 5, priceEth: eth(open) },
-    { id: `${id}-50`, label: '1/50', kind: 'limited', supply: 50, available: soldOut ? 0 : 12 + (open % 30), maxPerOrder: 3, priceEth: eth(open + 20) },
-    { id: `${id}-10`, label: '1/10', kind: 'limited', supply: 10, available: soldOut ? 0 : 1 + (open % 6), maxPerOrder: 2, priceEth: eth(open + 60) },
     { id: `${id}-1`, label: '1/1', kind: 'unique', supply: 1, available: soldOut ? 0 : 1, maxPerOrder: 1, priceEth: eth(open + 150) },
+    { id: `${id}-10`, label: '1/10', kind: 'limited', supply: 10, available: soldOut ? 0 : 1 + (open % 6), maxPerOrder: 2, priceEth: eth(open + 60) },
+    { id: `${id}-50`, label: '1/50', kind: 'limited', supply: 50, available: soldOut ? 0 : 12 + (open % 30), maxPerOrder: 3, priceEth: eth(open + 20) },
+    { id: `${id}-open`, label: 'ABERTA', kind: 'open', supply: null, available: soldOut ? 0 : null, maxPerOrder: 5, priceEth: eth(open) },
   ]
+}
+
+const NETWORK_LABEL: Record<Network, string> = { ethereum: 'Ethereum', polygon: 'Polygon', solana: 'Solana' }
+const ACCESSORIES = ['Óculos', 'Chapéu', 'Fones', 'Terno', 'Moletom', 'Jaqueta']
+const COLORS = ['Esmeralda', 'Violeta', 'Âmbar', 'Marfim', 'Dourado', 'Carmim']
+const RARITIES = ['Raro', 'Comum', 'Épico', 'Lendário']
+const RATINGS = ['4.8', '4.6', '4.9', '4.7']
+
+/** "Emerald Ape #042" -> série "Kurio Apes" e token "#0042". */
+function seriesOf(title: string) {
+  const [, word = 'Editions'] = title.replace(/\s#\d+$/, '').split(' ')
+  return `Kurio ${word === 'Echo' ? 'Echoes' : `${word}s`}`
+}
+function tokenOf(title: string) {
+  return `#${(title.match(/#(\d+)$/)?.[1] ?? '0').padStart(4, '0')}`
 }
 
 /** Data fixa: o catálogo é determinístico entre execuções (§6). */
@@ -109,12 +125,26 @@ export function buildNftFixtures(): NftRecord[] {
       soldOut: seed.soldOut === true,
       createdAt: new Date(BASE_TIME - index * DAY_MS).toISOString(),
       version: 1,
-      description: `${seed.title} é uma peça de ${seed.creator} na coleção ${seed.collection.replace('-', ' ')}, cunhada na rede ${seed.network}.`,
-      gallery: [image, { url: ART.hero.src, alt: ART.hero.alt }, image, image],
+      description: `Um colecionável digital finalizado à mão da coleção Kurio Editions, verificado na ${NETWORK_LABEL[seed.network]}, com arte desbloqueável e acesso para colecionadores.`,
+      about: [
+        `${seed.title} é uma obra digital finalizada à mão da coleção Kurio Editions. Cada atributo fica armazenado nos metadados do token e verificado na ${NETWORK_LABEL[seed.network]}. A obra explora identidade, movimento e luz em um mundo digital sem fronteiras.`,
+        `A propriedade inclui a arte em alta resolução, lançamentos exclusivos para colecionadores e um registro permanente de procedência registrada na rede. ${seed.creator} recebe 5% de direitos autorais nas vendas secundárias, apoiando novos trabalhos e lançamentos da comunidade.`,
+      ],
+      tokenId: tokenOf(seed.title),
+      collectionName: seriesOf(seed.title),
+      rating: { average: RATINGS[index % RATINGS.length], count: 19 + ((index * 7) % 40) },
+      contract: {
+        address: `0x${(0x7a42 + index * 997).toString(16).toUpperCase()}...${(0x19e8 + index * 1337).toString(16).toUpperCase()}`,
+        standard: 'ERC-721',
+        royaltyPercent: '5',
+      },
+      // O Figma repete a mesma arte nas miniaturas; só o texto alternativo muda.
+      gallery: [1, 2, 3, 4].map((view) => ({ url: art.src, alt: `${seed.title}, vista ${view}` })),
       editions: buildEditions(id, seed),
       attributes: [
-        { name: 'Criador', value: seed.creator },
-        { name: 'Rede', value: seed.network },
+        { name: 'Acessório', value: ACCESSORIES[index % ACCESSORIES.length] },
+        { name: 'Cor', value: COLORS[index % COLORS.length] },
+        { name: 'Raridade', value: RARITIES[index % RARITIES.length] },
       ],
       trendingScore: (index * 7919) % 101,
     }

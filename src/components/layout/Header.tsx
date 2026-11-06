@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouterState } from '@tanstack/react-router'
 import { SearchDialog } from './SearchDialog'
 import cartIcon from '@/assets/icons/cart.svg'
 import cartBadge from '@/assets/icons/cart-badge.svg'
@@ -15,6 +15,8 @@ type HeaderProps = {
 const outOfScopeNav = ['Mercado', 'Criadores', 'Aprenda']
 
 export function Header({ cartCount = 0 }: HeaderProps) {
+  // Figma: nas telas do fluxo de compra o item ativo do menu é "Mercado", não "Início".
+  const inMarketFlow = useRouterState({ select: (state) => /^\/(nft|cart|checkout)(\/|$)/.test(state.location.pathname) })
   return (
     <header className="mx-auto w-full max-w-page px-4 min-[1240px]:px-0">
       <div className="flex h-11 items-start justify-between">
@@ -45,17 +47,24 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               </>
             )}
           </Link>
-          {outOfScopeNav.map((label) => (
-            <button
-              key={label}
-              type="button"
-              aria-disabled="true"
-              title="Indisponível nesta demonstração"
-              className="cursor-default text-[16px] font-normal text-text-foreground"
-            >
-              {label}
-            </button>
-          ))}
+          {outOfScopeNav.map((label) => {
+            const active = inMarketFlow && label === 'Mercado'
+            return (
+              <button
+                key={label}
+                type="button"
+                aria-disabled="true"
+                aria-current={active ? 'page' : undefined}
+                title="Indisponível nesta demonstração"
+                className={`relative h-11 cursor-default text-[16px] ${active ? 'font-bold text-text-accent' : 'font-normal text-text-foreground'}`}
+              >
+                {label}
+                {active && (
+                  <img src={navUnderline} alt="" className="absolute bottom-0 left-0 block h-[3px] w-full max-w-none" />
+                )}
+              </button>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-7">

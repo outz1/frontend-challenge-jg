@@ -41,7 +41,21 @@ export const nftSummarySchema = z.object({
 export type NftSummary = z.infer<typeof nftSummarySchema>
 
 export const nftSchema = nftSummarySchema.extend({
+  /** Resumo exibido ao lado da galeria. */
   description: z.string(),
+  /** Parágrafos da aba "Detalhes do NFT". */
+  about: z.array(z.string()).min(1),
+  tokenId: z.string(),
+  /** Nome da série ("Kurio Apes"); `collection` é a categoria usada nos filtros. */
+  collectionName: z.string(),
+  /** Média como string decimal ("4.8"): avaliação não passa por float. */
+  rating: z.object({ average: z.string(), count: z.number().int().nonnegative() }),
+  contract: z.object({
+    address: z.string(),
+    standard: z.string(),
+    /** Percentual de royalties em string decimal ("5"). */
+    royaltyPercent: z.string(),
+  }),
   gallery: z.array(nftImageSchema).min(1),
   editions: z.array(editionSchema).min(1),
   attributes: z.array(z.object({ name: z.string(), value: z.string() })),

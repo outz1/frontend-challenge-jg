@@ -1,4 +1,4 @@
-import { createRootRouteWithContext, Link, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext, Link, Outlet, useRouterState } from '@tanstack/react-router'
 import type { QueryClient } from '@tanstack/react-query'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
@@ -14,18 +14,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootLayout() {
+  // Na tela de detalhe o mobile usa a buy bar no lugar da tab bar (Figma 15:5536).
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const showTabBar = !pathname.startsWith('/nft/')
   return (
     <div className="flex min-h-dvh flex-col">
       <div className="pt-6 max-md:hidden">
         <Header />
       </div>
-      <main id="conteudo" className="flex-1 pb-[126px] md:pb-0">
+      <main id="conteudo" className={`flex-1 md:pb-0 ${showTabBar ? 'pb-[126px]' : ''}`}>
         <Outlet />
       </main>
       <div className="max-md:hidden">
         <Footer />
       </div>
-      <TabBar />
+      {showTabBar && <TabBar />}
     </div>
   )
 }

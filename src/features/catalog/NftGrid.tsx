@@ -1,5 +1,7 @@
 import { ApiRequestError } from '@/api/client'
+import { cn } from '@/lib/utils'
 import type { NftSummary } from '@/api/contracts'
+import { FavoriteIconButton } from '@/features/nft/FavoriteButton'
 import { NftCard, NftCardSkeleton } from './NftCard'
 
 const GRID =
@@ -10,8 +12,12 @@ export function NftGrid({ items }: { items: NftSummary[] }) {
     <ul className={GRID}>
       {items.map((nft, index) => (
         // No mobile a segunda coluna desce 32px, como no Figma (Column R, 70395:244).
-        <li key={nft.id} className={index % 2 === 1 ? 'translate-y-8 md:translate-y-0' : undefined}>
+        <li key={nft.id} className={cn('relative', index % 2 === 1 && 'translate-y-8 md:translate-y-0')}>
           <NftCard nft={nft} priority={index < 3} />
+          {/* Coração só no mobile (Figma 15:5464). Fica fora do link para não aninhar controles interativos. */}
+          <div className="absolute top-3 right-[11px] md:hidden">
+            <FavoriteIconButton nftId={nft.id} title={nft.title} size={28} />
+          </div>
         </li>
       ))}
     </ul>

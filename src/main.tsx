@@ -8,6 +8,9 @@ import '@fontsource/roboto-mono/700.css'
 import './styles/globals.css'
 import { routeTree } from './routeTree.gen'
 import { createQueryClient } from './api/queryClient'
+import { sessionKeys } from './api/queries/session'
+import { onSessionLost } from './auth/events'
+import { safeRedirect } from './auth/guard'
 
 const queryClient = createQueryClient()
 
@@ -15,6 +18,22 @@ const router = createRouter({
   routeTree,
   context: { queryClient },
   defaultPreload: 'intent',
+})
+
+/**
+ * Sessão perdida (expirou ou foi invalidada): descarta o cache privado e leva ao login guardando o contexto
+ * (`redirect`) para retomar de onde parou depois de entrar de novo (§3).
+ */
+onSessionLost((reason) => {
+  queryClient.clear()
+  queryClient.setQueryData(sessionKeys.current, null)
+  const { pathname, href } = router.state.location
+  if (pathname === '/login' || pathname === '/signup') return
+  void router.navigate({
+    to: '/login',
+    search: { redirect: safeRedirect(href), reason: reason === 'expired' ? 'expired' : undefined },
+    replace: true,
+  })
 })
 
 declare module '@tanstack/react-router' {

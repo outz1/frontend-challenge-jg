@@ -22,6 +22,7 @@
   --color-text-secondary: #cfb28c;
   --color-text-accent: #e89b55;
   --color-elevated: #fbfbfb;
+  --color-coral: #f0805f; /* erros de formulário (Text/Coral, Figma 16:1022) */
 
   /* Escala tipográfica (tamanho / line-height) */
   --text-display: 43px;

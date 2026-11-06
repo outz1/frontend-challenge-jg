@@ -1,24 +1,33 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router'
+import { useAddToCart } from '@/api/queries/cart'
 import type { Nft } from '@/api/contracts'
-import heart from '@/assets/icons/heart-outline.svg'
 import linkedin from '@/assets/icons/share-linkedin.svg'
 import message from '@/assets/icons/share-message.svg'
 import twitter from '@/assets/icons/share-twitter.svg'
 import { withEthUnit } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 import { EditionPicker } from './EditionPicker'
+import { FavoriteButton } from './FavoriteButton'
 import { Gallery } from './Gallery'
 import { QuantityStepper } from './QuantityStepper'
 import { RelatedNfts } from './RelatedNfts'
 import { Stars } from './Rating'
 import type { Purchase } from './purchase'
 
-const UNAVAILABLE = 'Disponível em breve nesta demonstração'
-
 /** Detalhe a partir de 768 px (Figma 10:244). */
 export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase }) {
   const { edition, quantity, max, soldOut, message: limit } = purchase
   const attributes = nft.attributes.map((a) => a.value).join(', ')
+  const router = useRouter()
+  const add = useAddToCart()
+
+  function buy() {
+    if (soldOut || add.isPending) return // clique repetido não duplica a inclusão
+    add.mutate(
+      { nftId: nft.id, editionId: edition.id, quantity },
+      { onSuccess: () => void router.navigate({ to: '/cart' }) },
+    )
+  }
 
   return (
     <div className="mx-auto hidden w-full max-w-page flex-col gap-24 px-4 pt-8 pb-16 md:flex min-[1240px]:px-0">
@@ -69,21 +78,13 @@ export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase 
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    disabled
-                    title={soldOut ? 'Edição esgotada' : UNAVAILABLE}
-                    className="h-10 w-[130px] rounded-[6px] bg-brand text-[14px] leading-5 font-bold text-ink disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={buy}
+                    aria-disabled={soldOut || add.isPending}
+                    className="h-10 w-[130px] rounded-[6px] bg-brand text-[14px] leading-5 font-bold text-ink aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
                   >
-                    COMPRAR
+                    {add.isPending ? 'ADICIONANDO…' : soldOut ? 'ESGOTADO' : 'COMPRAR'}
                   </button>
-                  <button
-                    type="button"
-                    disabled
-                    title={UNAVAILABLE}
-                    className="flex h-10 w-[130px] items-center justify-center gap-2 rounded-[6px] border border-brand text-[14px] leading-5 font-medium text-text-accent disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    <img src={heart} alt="" width={20} height={20} className="block" />
-                    Favoritar
-                  </button>
+                  <FavoriteButton nftId={nft.id} />
                 </div>
               </div>
               <p role="status" className={cn('min-h-5 text-[14px] leading-5 text-text-accent', !limit && 'sr-only')}>

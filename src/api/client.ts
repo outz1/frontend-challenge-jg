@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios'
-import { API_BASE, apiErrorSchema, type ApiError } from './contracts'
+import { clearToken, getGuestId, getToken } from '@/auth/token'
+import { notifySessionLost } from '@/auth/events'
+import { API_BASE, apiErrorSchema, endpoints, type ApiError } from './contracts'
 
 /** Única porta de saída REST (CLAUDE.md): sessão, erros tipados e cancelamento passam por aqui. */
 export const http = axios.create({
@@ -43,6 +45,16 @@ export function isCancel(error: unknown) {
   return axios.isCancel(error)
 }
 
+/** Login e cadastro nunca levam token: um token velho não deve contaminar a tentativa. */
+const isCredentialRequest = (url?: string) => url === endpoints.login || url === endpoints.signup
+
+http.interceptors.request.use((config) => {
+  config.headers.set('X-Guest-Id', getGuestId())
+  const token = getToken()
+  if (token && !isCredentialRequest(config.url)) config.headers.set('Authorization', `Bearer ${token}`)
+  return config
+})
+
 http.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
@@ -61,6 +73,11 @@ http.interceptors.response.use(
       const parsed = apiErrorSchema.safeParse(error.response.data)
       if (parsed.success) {
         const { code, message, fieldErrors, details, retryAfterMs } = parsed.data.error
+        // Só conta como "sessão perdida" se havia sessão: visitante recebendo 401 não é expiração.
+        if ((code === 'session_expired' || code === 'unauthenticated') && error.config?.headers?.has('Authorization')) {
+          clearToken()
+          notifySessionLost(code === 'session_expired' ? 'expired' : 'unauthenticated')
+        }
         return Promise.reject(new ApiRequestError({ status: error.response.status, code, message, fieldErrors, details, retryAfterMs }))
       }
       return Promise.reject(

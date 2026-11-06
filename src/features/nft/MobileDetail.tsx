@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { Link, useCanGoBack, useRouter } from '@tanstack/react-router'
+import { useAddToCart } from '@/api/queries/cart'
 import type { Nft } from '@/api/contracts'
 import backArrow from '@/assets/icons/m-back-arrow.svg'
 import cartIcon from '@/assets/icons/m-cart.svg'
-import heart from '@/assets/icons/m-heart.svg'
 import mStar from '@/assets/icons/m-star.svg'
+import { toast } from '@/components/ui/toast'
 import { withEthUnit } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 import { EditionPicker } from './EditionPicker'
+import { FavoriteIconButton } from './FavoriteButton'
 import { QuantityStepper } from './QuantityStepper'
 import type { Purchase } from './purchase'
 
-const UNAVAILABLE = 'Disponível em breve nesta demonstração'
 const ROUND_BTN = 'grid size-[35px] place-items-center rounded-full border border-line bg-[#2f1d15]'
 
 /** Detalhe abaixo de 768 px (Figma 15:5536): hero, folha de detalhes e buy bar fixa. */
@@ -20,21 +21,17 @@ export function MobileDetail({ nft, purchase }: { nft: Nft; purchase: Purchase }
   const [index, setIndex] = useState(0)
   const image = nft.gallery[index] ?? nft.gallery[0]
   const attributes = nft.attributes.map((a) => a.value).join(', ')
+  const router = useRouter()
+  const add = useAddToCart()
+  const input = { nftId: nft.id, editionId: edition.id, quantity }
+  const busy = soldOut || add.isPending
 
   return (
     <div className="md:hidden">
       <div className="relative -mb-[114px] h-[506px] bg-[linear-gradient(137.6deg,#241612_12%,#2f1d15_106.6%)] px-[26px] pt-[23px]">
         <div className="flex items-center justify-between pb-2">
           <BackButton />
-          <button
-            type="button"
-            disabled
-            aria-label="Favoritar"
-            title={UNAVAILABLE}
-            className={cn(ROUND_BTN, 'disabled:cursor-not-allowed disabled:opacity-60')}
-          >
-            <img src={heart} alt="" width={16} height={14} className="block" />
-          </button>
+          <FavoriteIconButton nftId={nft.id} title={nft.title} />
         </div>
         <img
           src={image.url}
@@ -105,18 +102,18 @@ export function MobileDetail({ nft, purchase }: { nft: Nft; purchase: Purchase }
         <div className="flex items-center gap-3">
           <button
             type="button"
-            disabled
-            title={soldOut ? 'Edição esgotada' : UNAVAILABLE}
-            className="h-[60px] w-[196px] rounded-[40px] bg-[linear-gradient(100deg,#d28a4c_4%,rgba(210,138,76,0.8)_122%)] text-[16px] leading-5 font-bold text-ink disabled:cursor-not-allowed disabled:opacity-60"
+            aria-disabled={busy}
+            onClick={() => !busy && add.mutate(input, { onSuccess: () => void router.navigate({ to: '/cart' }) })}
+            className="h-[60px] w-[196px] rounded-[40px] bg-[linear-gradient(100deg,#d28a4c_4%,rgba(210,138,76,0.8)_122%)] text-[16px] leading-5 font-bold text-ink aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
           >
-            Comprar NFT
+            {add.isPending ? 'Adicionando…' : soldOut ? 'Esgotado' : 'Comprar NFT'}
           </button>
           <button
             type="button"
-            disabled
+            aria-disabled={busy}
             aria-label="Adicionar ao carrinho"
-            title={UNAVAILABLE}
-            className="grid size-[60px] place-items-center rounded-[40px] border border-line bg-[#2f1d15] disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => !busy && add.mutate(input, { onSuccess: () => toast.success(`${nft.title} adicionado ao carrinho.`) })}
+            className="grid size-[60px] place-items-center rounded-[40px] border border-line bg-[#2f1d15] aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
           >
             <img src={cartIcon} alt="" width={20} height={20} className="block" />
           </button>

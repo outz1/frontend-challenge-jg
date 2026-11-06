@@ -5,7 +5,17 @@ import { errorStatus, type ApiError, type ErrorCode } from '../src/api/contracts
  * Cenários de rede configuráveis e reproduzíveis (§6).
  * Selecionados por `?scenario=<nome>` (persistido em localStorage) ou `localStorage['kurio:scenario']`.
  */
-export const SCENARIOS = ['default', 'slow', 'empty', 'error-500', 'error-503', 'offline', 'timeout'] as const
+export const SCENARIOS = [
+  'default',
+  'slow',
+  'empty',
+  'error-500',
+  'error-503',
+  'offline',
+  'timeout',
+  'session-expired',
+  'favorites-error',
+] as const
 export type Scenario = (typeof SCENARIOS)[number]
 
 export const SCENARIO_KEY = 'kurio:scenario'

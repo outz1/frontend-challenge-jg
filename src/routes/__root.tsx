@@ -1,8 +1,10 @@
 import { createRootRouteWithContext, Link, Outlet, useRouterState } from '@tanstack/react-router'
 import type { QueryClient } from '@tanstack/react-query'
+import { useCartCount } from '@/api/queries/cart'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { TabBar } from '@/components/layout/TabBar'
+import { Toaster } from '@/components/ui/toast'
 
 export type RouterContext = {
   queryClient: QueryClient
@@ -16,11 +18,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
   // Na tela de detalhe o mobile usa a buy bar no lugar da tab bar (Figma 15:5536).
   const pathname = useRouterState({ select: (state) => state.location.pathname })
-  const showTabBar = !pathname.startsWith('/nft/')
+  const cartCount = useCartCount()
+  const showTabBar = !pathname.startsWith('/nft/') && pathname !== '/login' && pathname !== '/signup'
   return (
     <div className="flex min-h-dvh flex-col">
       <div className="pt-6 max-md:hidden">
-        <Header />
+        <Header cartCount={cartCount} />
       </div>
       <main id="conteudo" className={`flex-1 md:pb-0 ${showTabBar ? 'pb-[126px]' : ''}`}>
         <Outlet />
@@ -28,7 +31,8 @@ function RootLayout() {
       <div className="max-md:hidden">
         <Footer />
       </div>
-      {showTabBar && <TabBar />}
+      {showTabBar && <TabBar cartCount={cartCount} />}
+      <Toaster />
     </div>
   )
 }

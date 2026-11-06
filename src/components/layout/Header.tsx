@@ -1,4 +1,5 @@
-import { Link, useRouterState } from '@tanstack/react-router'
+import { Link, useRouter, useRouterState } from '@tanstack/react-router'
+import { useLogout, useSession } from '@/api/queries/session'
 import { SearchDialog } from './SearchDialog'
 import cartIcon from '@/assets/icons/cart.svg'
 import cartBadge from '@/assets/icons/cart-badge.svg'
@@ -15,6 +16,9 @@ type HeaderProps = {
 const outOfScopeNav = ['Mercado', 'Criadores', 'Aprenda']
 
 export function Header({ cartCount = 0 }: HeaderProps) {
+  const { user } = useSession()
+  const logout = useLogout()
+  const router = useRouter()
   // Figma: nas telas do fluxo de compra o item ativo do menu é "Mercado", não "Início".
   const inMarketFlow = useRouterState({ select: (state) => /^\/(nft|cart|checkout)(\/|$)/.test(state.location.pathname) })
   return (
@@ -83,13 +87,36 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             )}
           </Link>
 
-          <Link
-            to="/login"
-            className="flex h-[35px] w-[100px] items-center justify-center gap-1 rounded-[6px] bg-brand text-[16px] font-medium text-ink"
-          >
-            <img src={loginIcon} alt="" className="block size-5" />
-            Entrar
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <p className="hidden max-w-[140px] truncate text-[14px] text-text-foreground lg:block" title={user.email}>
+                <span className="sr-only">Conectado como </span>
+                {user.name.split(' ')[0]}
+              </p>
+              <button
+                type="button"
+                aria-disabled={logout.isPending}
+                onClick={() => {
+                  if (logout.isPending) return
+                  // O logout local é imediato; navegar já evita uma navegação tardia sequestrar outra tela.
+                  logout.mutate()
+                  void router.navigate({ to: '/', replace: true })
+                }}
+                className="flex h-[35px] w-[100px] items-center justify-center gap-1 rounded-[6px] bg-brand text-[16px] font-medium text-ink"
+              >
+                <img src={loginIcon} alt="" className="block size-5" />
+                Sair
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="flex h-[35px] w-[100px] items-center justify-center gap-1 rounded-[6px] bg-brand text-[16px] font-medium text-ink"
+            >
+              <img src={loginIcon} alt="" className="block size-5" />
+              Entrar
+            </Link>
+          )}
         </div>
       </div>
       <img src={headerDivider} alt="" className="mt-0 block h-px w-full max-w-none" />

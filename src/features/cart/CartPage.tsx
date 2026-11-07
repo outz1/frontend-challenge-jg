@@ -42,7 +42,7 @@ export function CartPage() {
             Carrinho de NFTs
           </h1>
           <nav aria-label="Você está em" className="mt-8 mb-3 text-[15px] leading-4 font-bold text-text-foreground">
-            <Link to="/">Início</Link> / Mercado / <span aria-current="page">Carrinho</span>
+            <Link to="/">Início</Link> / <Link to="/" hash="catalogo">Mercado</Link> / <span aria-current="page">Carrinho</span>
           </nav>
         </>
       ) : (

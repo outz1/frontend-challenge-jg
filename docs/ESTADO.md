@@ -18,7 +18,7 @@ Atualizado em 2026-11-07.
 
 **Próximo passo:** (1) medir o mobile na máquina local e, confirmado, apagar `docs/TEMP-PERFORMANCE-MOBILE.md`; (2) publicar de novo na Vercel (`npx vercel --prod`), porque o deploy é de `b4f9be1` e não tem as otimizações; (3) enviar o link do repositório e a URL pública.
 
-Pendências abertas: "Mercado, Criadores, Aprenda" do Header são botões inertes (fora do escopo, §3); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
+Pendências abertas: "Criadores" e "Aprenda" do Header ficam fora do escopo (§3) e só avisam que estão indisponíveis; "Mercado" leva ao catálogo (2026-11-07); `nft.updated` só chega para NFTs assinados (catálogo, detalhe e carrinho assinam; relacionados do detalhe não).
 
 Marcar `[x]` somente com evidência (teste passando, relatório gerado, URL no ar). Os números `§N` apontam para o enunciado, que é o dono dos requisitos.
 

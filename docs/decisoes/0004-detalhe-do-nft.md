@@ -22,5 +22,5 @@ Requisitos em `docs/DESAFIO.md` §3 (Detalhes do NFT, "Catálogo e detalhe") e �
 - Linhas e sublinhados (`Line 2`, `Line 6`) em CSS, mesma cor e espessura.
 - Pontos do carrossel de "Mais desta coleção": omitidos na primeira versão; hoje o carrossel é compartilhado com o carrinho (`NftShowcase`) e mostra os pontos só quando há mais de uma página de cinco (ver `0008`). No mobile os pontos da galeria são reais (um por imagem).
 - Em mobile, abas, texto longo e "Mais desta coleção" não aparecem, porque o frame mobile não os tem.
-- "Mercado" fica ativo no menu nas telas do fluxo de compra, como no Figma, mas segue inerte (fora do escopo).
+- "Mercado" fica ativo no menu nas telas do fluxo de compra, como no Figma. Desde 2026-11-07 ele e o "Mercado" da trilha levam ao catálogo (`/#catalogo`), porque o mercado é o catálogo; antes era um botão inerte, que parecia quebrado. "Criadores" e "Aprenda" seguem fora do escopo e o clique mostra o aviso de indisponível.
 - Avaliações (aba, nota) e compartilhar são exibidos, sem ação (fora do escopo, §3).

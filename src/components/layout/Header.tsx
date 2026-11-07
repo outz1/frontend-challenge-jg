@@ -1,6 +1,8 @@
 import { Link, useRouter, useRouterState } from '@tanstack/react-router'
 import { useLogout, useSession } from '@/api/queries/session'
 import { SearchDialog } from './SearchDialog'
+import { toast } from '@/components/ui/toast'
+import { UNAVAILABLE_NOTICE } from '@/features/auth/form-utils'
 import cartIcon from '@/assets/icons/cart.svg'
 import cartBadge from '@/assets/icons/cart-badge.svg'
 import loginIcon from '@/assets/icons/login.svg'
@@ -12,8 +14,11 @@ type HeaderProps = {
   cartCount?: number
 }
 
-/** Seções fora do escopo (§3): visíveis como no layout, sem navegação. */
-const outOfScopeNav = ['Mercado', 'Criadores', 'Aprenda']
+/** Páginas editoriais fora do escopo (§3): visíveis como no layout; o clique avisa que estão indisponíveis. */
+const outOfScopeNav = ['Criadores', 'Aprenda']
+
+const NAV_ITEM = 'relative flex h-11 items-center text-[16px]'
+const underline = <img src={navUnderline} alt="" className="absolute bottom-0 left-0 block h-[3px] w-full max-w-none" />
 
 export function Header({ cartCount = 0 }: HeaderProps) {
   const { user } = useSession()
@@ -53,24 +58,28 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               </>
             )}
           </Link>
-          {outOfScopeNav.map((label) => {
-            const active = inMarketFlow && label === 'Mercado'
-            return (
-              <button
-                key={label}
-                type="button"
-                aria-disabled="true"
-                aria-current={active ? 'page' : undefined}
-                title="Indisponível nesta demonstração"
-                className={`relative h-11 cursor-default text-[16px] ${active ? 'font-bold text-text-accent' : 'font-normal text-text-foreground'}`}
-              >
-                {label}
-                {active && (
-                  <img src={navUnderline} alt="" className="absolute bottom-0 left-0 block h-[3px] w-full max-w-none" />
-                )}
-              </button>
-            )
-          })}
+          {/* "Mercado" é o catálogo: leva à seção do Início e fica ativo nas telas do fluxo de compra (Figma). */}
+          <Link
+            to="/"
+            hash="catalogo"
+            aria-current={inMarketFlow ? 'page' : undefined}
+            className={`${NAV_ITEM} ${inMarketFlow ? 'font-bold text-text-accent' : 'font-normal text-text-foreground'}`}
+          >
+            Mercado
+            {inMarketFlow && underline}
+          </Link>
+          {outOfScopeNav.map((label) => (
+            <button
+              key={label}
+              type="button"
+              aria-disabled="true"
+              title={UNAVAILABLE_NOTICE}
+              onClick={() => toast.show(`${label}: ${UNAVAILABLE_NOTICE.toLowerCase()}`)}
+              className={`${NAV_ITEM} cursor-not-allowed font-normal text-text-foreground`}
+            >
+              {label}
+            </button>
+          ))}
         </nav>
 
         <div className="flex items-center gap-7">

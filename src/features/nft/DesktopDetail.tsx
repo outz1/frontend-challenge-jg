@@ -40,7 +40,11 @@ export function DesktopDetail({ nft, purchase }: { nft: Nft; purchase: Purchase 
               </Link>
             </li>
             <li aria-hidden="true">/</li>
-            <li>Mercado</li>
+            <li>
+              <Link to="/" hash="catalogo" className="hover:underline">
+                Mercado
+              </Link>
+            </li>
           </ol>
         </nav>
 

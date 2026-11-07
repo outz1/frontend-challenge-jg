@@ -174,7 +174,7 @@ Resumo; o método de verificação e a lista completa estão em `docs/decisoes/0
 ## Assets substituídos e origem
 
 - **Fonte:** Roboto Mono (400, 500 e 700) via `@fontsource/roboto-mono`, empacotada localmente; sem CDN.
-- **Imagens de NFT, hero, promoções e "Diário da Cunhagem":** exportadas do Figma e convertidas para WebP e redimensionadas (a arte original tem 1254 px e cerca de 2 MB), em `src/assets/images`. O catálogo reutiliza as quatro artes de NFT, como o próprio Figma.
+- **Imagens de NFT, hero, promoções e "Diário da Cunhagem":** exportadas do Figma e convertidas para WebP e redimensionadas (a arte original tem 1254 px e cerca de 2 MB), em `src/assets/images`. Cada arte tem também uma variante de 450 px (`*-450.webp`, gerada por `scripts/image-variants.mjs`) servida em `srcset` por causa do Lighthouse mobile. O catálogo reutiliza as quatro artes de NFT, como o próprio Figma.
 - **Ícones:** SVGs exportados do Figma em `src/assets/icons`, usados nas posições do frame. A marca do Google é composta por sete vetores posicionados como no Figma.
 - **Variantes de estado:** onde o Figma desenha um ícone em um só estado (por exemplo o botão de diminuir do stepper mobile), há duas variantes do SVG, ativa e desativada.
 - O Figma, o enunciado e os relatórios de auditoria não são assets de execução: ficam fora do bundle.

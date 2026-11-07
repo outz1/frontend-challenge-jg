@@ -65,7 +65,7 @@ Scripts do `package.json` (npm):
 - `npm run dev`: dev com mocks (`--mode mocks`, lê `.env.mocks`). `npm run dev:real`: sem mocks.
 - `npm run build`: gera rotas, typecheck e build de demonstração com mocks. `npm run preview`: serve o build na porta 4173.
 - `npm run typecheck`, `npm run lint`.
-- A criar: testes Playwright (`test`) e auditoria Lighthouse (`lighthouse`).
+- Testes e auditoria: `npm run test` (Playwright; `test:update` regenera baselines) e `npm run lighthouse` (precisa de `npm run build` antes).
 
 ## Convenções
 

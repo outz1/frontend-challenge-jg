@@ -43,6 +43,7 @@ Não há outra variável. A base da API é `/api` (`src/api/contracts/endpoints.
 | `npm run test:update` | Idem, atualizando as baselines visuais |
 | `npm run lighthouse` | Auditoria Lighthouse (precisa de `npm run build` antes; ver [Lighthouse](#lighthouse)) |
 | `npx playwright show-report` | Abre o último relatório HTML dos testes |
+| `node scripts/image-variants.mjs` | Regera as variantes de 450 px das artes (`*-450.webp`, usadas em `srcset`); rodar depois de trocar uma arte |
 
 ## Credenciais fictícias
 
@@ -167,6 +168,7 @@ src/
   features/      catálogo, NFT, carrinho, checkout, conta e auth
   components/    layout e shadcn/ui adaptado
   styles/        tokens do Figma e CSS global
+scripts/         utilitários de assets (variantes de imagem)
 mocks/           MSW: handlers REST, fixtures, banco local, cenários e socket
 e2e/             Playwright
 lighthouse/      script, relatórios e resultados

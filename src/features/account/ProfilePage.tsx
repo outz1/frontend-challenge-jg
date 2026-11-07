@@ -147,7 +147,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
 
   return (
     <form onSubmit={onSubmit} noValidate aria-label={TITLE} className="flex flex-col gap-8">
-      <div className="grid gap-x-7 gap-y-6 md:grid-cols-2">
+      <div className="grid gap-x-7 gap-y-6 lg:grid-cols-2">
         <CheckoutInput name="name" label="Nome de exibição" required autoComplete="name" value={values.name} onChange={(e) => setValue('name', e.target.value)} error={errors.name} />
         <CheckoutInput name="username" label="Nome de usuário" required autoComplete="username" value={values.username} onChange={(e) => setValue('username', e.target.value)} error={errors.username} />
         <CheckoutInput name="email" type="email" label="E-mail" required autoComplete="email" value={values.email} onChange={(e) => setValue('email', e.target.value)} error={errors.email} />

@@ -2,21 +2,21 @@
 
 Início (`/`) e detalhe do NFT (`/nft/nft-001`), mobile e desktop, build otimizado com o cenário padrão dos mocks. Três medições por página e perfil; as notas abaixo são a mediana. Relatórios completos em `lighthouse/reports/` (`<alvo>-run-<n>.html` e `.json`, mais `lighthouse-summary.json` com ambiente, versões e commit).
 
-## Resultado (commit `b76024e`)
+## Resultado (commit `f65abe8`)
 
 | Alvo | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | TBT |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Início desktop | 100 | 100 | 100 | 92 | 0,81 s | 0,0001 | 0 ms |
-| Detalhe desktop | 100 | 100 | 100 | 92 | 0,75 s | 0 | 0 ms |
-| Início mobile | 92 | 100 | 100 | 92 | 3,07 s | 0 | 31 ms |
-| Detalhe mobile | 90 | 100 | 100 | 92 | 3,40 s | 0 | 16 ms |
+| Início desktop | 99 | 100 | 100 | 92 | 0,84 s | 0,0001 | 0 ms |
+| Detalhe desktop | 100 | 100 | 100 | 92 | 0,76 s | 0 | 0 ms |
+| Início mobile | 92 | 100 | 100 | 92 | 3,10 s | 0 | 45 ms |
+| Detalhe mobile | 90 | 100 | 100 | 92 | 3,37 s | 0 | 19 ms |
 
-Metas do §10: Performance 90, Acessibilidade 95, Boas práticas 95, SEO 90. **Todas as metas foram atingidas nos quatro alvos** (o script saiu com código 0). Notas por execução da Performance: início desktop 100, 100, 99; detalhe desktop 100, 100, 100; início mobile 92, 92, 92; detalhe mobile 90, 90, 90.
+Metas do §10: Performance 90, Acessibilidade 95, Boas práticas 95, SEO 90. **Todas as metas foram atingidas nos quatro alvos** (o script saiu com código 0). Notas por execução da Performance: início desktop 99, 99, 99; detalhe desktop 100, 100, 100; início mobile 92, 91, 92; detalhe mobile 90, 90, 90. A rodada anterior, sobre `b76024e` (antes da revisão visual de rodapé e tab bar), deu as mesmas medianas mobile.
 
 ## Ambiente e condições
 
 - Lighthouse 13.6.0, Chromium 153.0.8010.12 (o do Playwright), Node v22.23.4.
-- Linux 6.18 (x64), Intel Xeon 2,3 GHz (4 núcleos), 16 GiB, máquina de nuvem sem outros programas abertos. Carga do sistema: 1,39 antes e 0,77 depois (média de 1 minuto). Índice de benchmark de CPU do Lighthouse entre 3150 e 3390.
+- Linux 6.18 (x64), Intel Xeon 2,3 GHz (4 núcleos), 16 GiB, máquina de nuvem sem outros programas abertos. Carga do sistema: 2,45 antes e 0,85 depois (média de 1 minuto). Índice de benchmark de CPU do Lighthouse entre 3000 e 3390.
 - Perfil mobile: emulação 390 por 844, limitação simulada padrão do Lighthouse (4G lenta, CPU 4 vezes mais lenta). Perfil desktop: configuração `desktop` do Lighthouse, 1440 por 1000.
 - Servidor: `vite preview` do build gerado por `npm run build` (mocks ligados, MSW ativo, latência variável padrão de 150 a 749 ms). Imagens, fontes e funcionalidades são as da entrega; nada foi simplificado para a nota.
 - Como reproduzir: `npm run build` e depois `npm run lighthouse` (`LH_RUNS` e `LH_TARGETS` restringem a rodada).

@@ -16,6 +16,18 @@ Cada tela foi capturada no app (1440 px e 414 px, mocks, reduced motion) e compa
 - **Detalhe**: coluna de informações com os 448 px da galeria, stepper em cápsula de 33 por 49,5 px, imagem principal de 404 px.
 - **Geral**: rodapé com as larguras de coluna do Figma, linhas finas (0,3 px no Figma) como 1 px a 30% de opacidade, itens do cabeçalho alinhados, toast no topo no mobile.
 
+## Revisão antes do deploy (2026-11-07)
+
+Mesmo método, sobre o build com as otimizações mobile de `0009`: os 15 frames (Início, Detalhe, Carrinho, Pagamento, Login e Cadastro em 1440 e 414, Confirmação, Perfil e Carteiras em 1440) mais Início e Detalhe em 820 px. Corrigido:
+
+- **Tab bar mobile**: os cinco traços do ícone de scan tinham `inset` e `size-full` no próprio `<img>`; num `<img>` absoluto o `size-full` vence `right`/`bottom`, e cada traço ocupava a barra inteira, pintando uma mancha clara sobre carrinho e perfil. A baseline visual do Início mobile tinha registrado o defeito. O `inset` passou para um `span`.
+- **Rodapé**: bloco centralizado de 1200 px (instância `70492:696` em x 120), não faixa de ponta a ponta; as duas faixas de baixo seguem as colunas do Figma a cada 303 px, e "Feito para colecionadores," volta a quebrar em duas linhas.
+- **Carrinho mobile**: título com até 200 px; "Emerald Ape #042" aparecia cortado.
+- **Sidebar da conta**: "Meu perfil" alinhado à esquerda (`70420:4537`, texto em x 10).
+- **Cadastro mobile**: título em 18 px (o "Entrar" do login segue em 20 px, como no frame).
+
+Diferenças que ficam, por dado ou decisão já registrada: contagens das facetas e faixa de preço vêm das fixtures; edição inicial é a aberta; "Mais desta coleção" mostra os itens reais da coleção; descrições do mock são um pouco mais longas; o selo do carrinho some com zero itens.
+
 ## Desvios assumidos
 
 - **Contagens da sidebar do catálogo** vêm das facetas reais da API simulada. O Figma mostra números fixos (por exemplo "Arte digital (33)").

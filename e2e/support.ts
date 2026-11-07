@@ -14,6 +14,8 @@ export type Scenario =
   | 'slow'
   | 'empty'
   | 'error-500'
+  | 'error-503'
+  | 'timeout'
   | 'offline'
   | 'session-expired'
   | 'favorites-error'

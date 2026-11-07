@@ -36,6 +36,26 @@ test.describe('5. Carrinho', () => {
     await expect(page.getByLabel('Código promocional').last()).toBeVisible()
   })
 
+  test('cupons do README: WELCOME5 aplica 5% e EXPIRED20 é recusado como expirado', async ({ page }) => {
+    await addToCart(page)
+    const code = page.getByLabel('Código promocional').last()
+    await code.fill('EXPIRED20')
+    await page.getByRole('button', { name: /^aplicar$/i }).last().click()
+    await expect(page.getByRole('alert').filter({ hasText: /expirou/i })).toBeVisible()
+    // O desconto vem da cotação da API (POST /quotes) que a tela pede depois de aplicar o cupom.
+    const quoted = page.waitForResponse(async (r) => {
+      if (r.request().method() !== 'POST' || !r.url().endsWith('/api/quotes')) return false
+      return ((await r.json()) as { coupon: { code: string } | null }).coupon?.code === 'WELCOME5'
+    })
+    await code.fill('WELCOME5')
+    await page.getByRole('button', { name: /^aplicar$/i }).last().click()
+    await expect(page.getByText(/WELCOME5/).first()).toBeVisible()
+    const quote = (await (await quoted).json()) as { subtotalEth: string; discountEth: string }
+    expect(typeof quote.discountEth).toBe('string') // ETH trafega como string decimal
+    expect(Number(quote.discountEth) * 20).toBeCloseTo(Number(quote.subtotalEth), 6)
+    await expect(page.getByText(`(-) ${quote.discountEth}`).filter({ visible: true }).first()).toBeVisible()
+  })
+
   test('itens do visitante são preservados ao entrar na conta', async ({ page }) => {
     await addToCart(page, 'nft-001')
     await login(page, ANA, '/login')

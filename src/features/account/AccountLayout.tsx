@@ -71,7 +71,7 @@ function AccountNav() {
 
   return (
     <nav aria-label="Conta" className="flex w-full shrink-0 flex-col bg-surface-card py-2 md:w-[310px]">
-      <p className="p-[10px] text-center text-[18px] leading-4 font-bold text-text-foreground max-md:hidden">Meu perfil</p>
+      <p className="self-start p-[10px] text-[18px] leading-4 font-bold text-text-foreground max-md:hidden">Meu perfil</p>
       {link('/profile', 'Dados do perfil', userIcon, 18)}
       {link('/wallets', 'Carteiras', locationIcon, 20)}
       <div className="max-md:hidden">

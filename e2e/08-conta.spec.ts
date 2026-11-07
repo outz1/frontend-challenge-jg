@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test'
-import { writeFileSync } from 'node:fs'
 import { ANA, BRUNO, login } from './support'
 
 const save = (page: import('@playwright/test').Page) => page.getByRole('button', { name: /^salvar$/i })
@@ -47,15 +46,15 @@ test.describe('8. Perfil, avatar, senha e carteiras', () => {
     await login(page, { email: ANA.email, password: 'Novissima@1' })
   })
 
-  test('avatar: envia, recusa formato inválido e remove', async ({ page }, info) => {
+  test('avatar: envia, recusa formato inválido e remove', async ({ page }) => {
     await login(page)
     await page.goto('/profile')
     const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'base64')
     await page.locator('input[type=file]').setInputFiles({ name: 'avatar.png', mimeType: 'image/png', buffer: png })
     await expect(page.getByAltText('Avatar do colecionador')).toBeVisible()
-    const txt = info.outputPath('nao-imagem.txt')
-    writeFileSync(txt, 'não sou imagem')
-    await page.locator('input[type=file]').setInputFiles(txt)
+    // Buffer em vez de arquivo em disco: o caminho de saída do teste tem acento ("inválido"), e com ele o
+    // Chromium não entrega o arquivo ao input (o `change` nem dispara).
+    await page.locator('input[type=file]').setInputFiles({ name: 'nao-imagem.txt', mimeType: 'text/plain', buffer: Buffer.from('não sou imagem') })
     await expect(page.getByText(/PNG, JPEG ou WebP/)).toBeVisible()
     await page.getByRole('button', { name: /remover/i }).click()
     await expect(page.getByAltText('Avatar do colecionador')).toHaveCount(0)

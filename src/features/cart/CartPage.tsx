@@ -219,7 +219,7 @@ function MobileRow({ item }: { item: CartItem }) {
       <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-0 left-0">
         <img srcSet={item.image.srcSet} sizes="100px" src={item.image.url} alt={item.image.alt} width={100} height={100} className="size-[100px] rounded-[14px] object-cover" />
       </Link>
-      <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-[13px] left-[109px] max-w-[140px] truncate text-[15px] leading-4 font-bold text-text-foreground">
+      <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-[13px] left-[109px] max-w-[200px] truncate text-[15px] leading-4 font-bold text-text-foreground">
         {item.title}
       </Link>
       <p className="absolute top-[35px] left-[109px] text-[14px] leading-4 text-text-secondary">Edição: {item.editionLabel}</p>

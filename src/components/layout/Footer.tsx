@@ -30,7 +30,8 @@ const UNAVAILABLE = 'Indisponível nesta demonstração'
 export function Footer() {
   return (
     <footer className="mt-16 w-full">
-      <div className="bg-surface-card">
+      {/* Figma 70492:696: bloco de 1200 px centralizado, não faixa de ponta a ponta; colunas das duas faixas de baixo a cada 303 px. */}
+      <div className="mx-auto w-full max-w-page bg-surface-card">
         <div className="mx-auto grid w-full max-w-page gap-8 px-8 pt-8 pb-4 md:grid-cols-2 lg:grid-cols-[265px_265px_266px_1fr] lg:gap-0">
           {HIGHLIGHTS.map((item, index) => (
             <section
@@ -51,8 +52,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="bg-surface-dark">
-        <div className="mx-auto grid w-full max-w-page items-center gap-4 p-8 md:grid-cols-2 lg:min-h-[88px] lg:grid-cols-[1fr_1fr_1fr_228px] lg:gap-[92px] lg:py-0">
+      <div className="mx-auto w-full max-w-page bg-surface-dark">
+        <div className="mx-auto grid w-full max-w-page items-center gap-4 p-8 md:grid-cols-2 lg:min-h-[88px] lg:grid-cols-[303px_303px_302px_1fr] lg:gap-0 lg:py-0">
           <p className="py-2 text-body font-bold tracking-[0.1em] text-text-foreground">KURIO</p>
           <p className="text-body leading-[22px] text-text-foreground">
             Feito para colecionadores, <span className="block">criadores e cultura</span>
@@ -62,8 +63,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="bg-surface-card">
-        <div className="mx-auto grid w-full max-w-page gap-8 p-8 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_228px] lg:gap-[124px]">
+      <div className="mx-auto w-full max-w-page bg-surface-card">
+        <div className="mx-auto grid w-full max-w-page gap-8 p-8 sm:grid-cols-2 lg:grid-cols-[303px_303px_302px_1fr] lg:gap-0">
           {LINK_COLUMNS.map((column) => (
             <nav key={column.title} aria-label={column.title} className="flex flex-col gap-2">
               <h2 className="text-[18px] leading-4 font-bold text-text-foreground">{column.title}</h2>

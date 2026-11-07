@@ -41,7 +41,11 @@ export function AuthScreen({ mode, title, description, redirect, children }: Pro
             KURIO
           </Link>
         </div>
-        <h1 id="auth-title" className="text-center text-[20px] leading-4 font-bold text-text-foreground">
+        {/* Figma 16:1022 e 16:1228: "Entrar" em 20 px, "Criar perfil de colecionador" em 18 px. */}
+        <h1
+          id="auth-title"
+          className={cn('text-center leading-4 font-bold text-text-foreground', mode === 'signup' ? 'text-[18px]' : 'text-[20px]')}
+        >
           {title}
         </h1>
         <p className="sr-only">{description}</p>

@@ -41,12 +41,23 @@ export function TabBar({ cartCount = 0 }: { cartCount?: number }) {
       >
         <img src={heart} alt="" className="absolute inset-0 block size-full max-w-none" />
       </button>
-      {/* Glifo de scan nas posições exatas do Figma (15:5529); o botão por cima carrega a semântica. */}
-      <img src={scan1} alt="" className="pointer-events-none absolute inset-[25.48%_46.66%_73.1%_46.86%] block size-full max-w-none" />
-      <img src={scan2} alt="" className="pointer-events-none absolute inset-[27.53%_50.32%_64.29%_47.18%] block size-full max-w-none" />
-      <img src={scan3} alt="" className="pointer-events-none absolute inset-[16.73%_46.98%_75.09%_50.51%] block size-full max-w-none" />
-      <img src={scan4} alt="" className="pointer-events-none absolute inset-[27.54%_47%_64.33%_50.51%] block size-full max-w-none" />
-      <img src={scan5} alt="" className="pointer-events-none absolute inset-[16.67%_50.31%_75.15%_47.18%] block size-full max-w-none" />
+      {/* Glifo de scan nas posições exatas do Figma (15:5529); o botão por cima carrega a semântica. O `inset` fica
+          no `span`: num `<img>` absoluto, `size-full` venceria o `right`/`bottom` e esticaria o traço pela barra toda. */}
+      <span aria-hidden="true" className="pointer-events-none absolute inset-[25.48%_46.66%_73.1%_46.86%]">
+        <img src={scan1} alt="" className="block size-full max-w-none" />
+      </span>
+      <span aria-hidden="true" className="pointer-events-none absolute inset-[27.53%_50.32%_64.29%_47.18%]">
+        <img src={scan2} alt="" className="block size-full max-w-none" />
+      </span>
+      <span aria-hidden="true" className="pointer-events-none absolute inset-[16.73%_46.98%_75.09%_50.51%]">
+        <img src={scan3} alt="" className="block size-full max-w-none" />
+      </span>
+      <span aria-hidden="true" className="pointer-events-none absolute inset-[27.54%_47%_64.33%_50.51%]">
+        <img src={scan4} alt="" className="block size-full max-w-none" />
+      </span>
+      <span aria-hidden="true" className="pointer-events-none absolute inset-[16.67%_50.31%_75.15%_47.18%]">
+        <img src={scan5} alt="" className="block size-full max-w-none" />
+      </span>
       <button
         type="button"
         aria-disabled="true"

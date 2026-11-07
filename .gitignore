@@ -5,7 +5,4 @@ dist
 playwright-report
 test-results
 lighthouse/reports/tmp
-docs/figma-exports/*.png
-docs/figma-exports/assets/**
-!docs/figma-exports/assets/.gitkeep
 .vercel

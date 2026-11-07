@@ -27,7 +27,7 @@ export function Toolbar({
   return (
     <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
       <nav aria-label="Seções do catálogo">
-        <ul className="flex gap-4 text-[14px] leading-4 whitespace-nowrap md:gap-5 md:text-[15px]">
+        <ul className="flex flex-wrap gap-x-3 gap-y-2 text-[14px] leading-4 whitespace-nowrap md:gap-5 md:text-[15px]">
           {TABS.map((tab) => {
             const active = search.tab === tab.id
             return (

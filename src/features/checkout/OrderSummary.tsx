@@ -35,25 +35,28 @@ export function OrderLines({ quote, items }: { quote: Quote; items: CartItem[] }
 /** Subtotal, desconto, taxa e total exatamente como a cotação do servidor devolveu (§3). */
 export function Totals({ quote, withHints = false }: { quote: Quote; withHints?: boolean }) {
   return (
-    <dl className="flex flex-col gap-3 text-text-foreground">
-      <div className="flex items-center justify-between">
-        <dt className="text-[15px]">Subtotal</dt>
-        <dd className="text-[18px] leading-4">{withEthUnit(quote.subtotalEth)}</dd>
-      </div>
-      <div className="flex items-center justify-between text-[15px]">
-        <dt>{quote.coupon ? `Desconto (${quote.coupon.code})` : 'Desconto do lançamento'}</dt>
-        <dd>(-) {formatEth(quote.discountEth)}</dd>
-      </div>
-      <div className="flex items-center justify-between">
-        <dt className="text-[15px]">Taxa de rede</dt>
-        <dd className="text-[18px] leading-4">{withEthUnit(quote.networkFeeEth)}</dd>
-      </div>
+    // Duas listas: o aviso de taxa estimada fica entre elas, porque `dl` não aceita `p` como filho.
+    <div className="flex flex-col gap-3 text-text-foreground">
+      <dl className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <dt className="text-[15px]">Subtotal</dt>
+          <dd className="text-[18px] leading-4">{withEthUnit(quote.subtotalEth)}</dd>
+        </div>
+        <div className="flex items-center justify-between text-[15px]">
+          <dt>{quote.coupon ? `Desconto (${quote.coupon.code})` : 'Desconto do lançamento'}</dt>
+          <dd>(-) {formatEth(quote.discountEth)}</dd>
+        </div>
+        <div className="flex items-center justify-between">
+          <dt className="text-[15px]">Taxa de rede</dt>
+          <dd className="text-[18px] leading-4">{withEthUnit(quote.networkFeeEth)}</dd>
+        </div>
+      </dl>
       {withHints && <p className="text-center text-[12px] leading-4 text-text-accent">Taxa estimada</p>}
-      <div className="flex items-center justify-between border-t border-line-soft pt-3 text-[16px] leading-4 font-bold">
+      <dl className="flex items-center justify-between border-t border-line-soft pt-3 text-[16px] leading-4 font-bold">
         <dt>Total</dt>
         <dd className="text-[18px] text-text-accent">{withEthUnit(quote.totalEth)}</dd>
-      </div>
-    </dl>
+      </dl>
+    </div>
   )
 }
 

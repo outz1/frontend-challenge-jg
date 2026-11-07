@@ -11,15 +11,16 @@ export function MobileHero() {
   return (
     <section
       aria-labelledby="mobile-hero-title"
-      className="relative flex h-[190px] w-full flex-col items-center justify-center gap-[10px] overflow-hidden rounded-[12px] p-4 md:hidden"
+      className="relative flex min-h-[190px] w-full flex-col items-center justify-center gap-[10px] overflow-hidden rounded-[12px] px-4 py-[6px] md:hidden"
     >
-      <img src={mask} alt="" className="pointer-events-none absolute top-0 left-0 block h-[190px] w-[366px] max-w-none" />
+      {/* 366 por 190 no frame; esticada com o cartão quando o texto quebra mais (zoom ou telas de 320 px). */}
+      <img src={mask} alt="" className="pointer-events-none absolute inset-0 block size-full max-w-none" />
       <div className="relative flex w-full flex-col items-center gap-4">
         <div className="flex w-full items-center gap-2">
           <div className="flex min-w-0 flex-1 flex-col items-start">
             <div className="flex w-full flex-col gap-[6px]">
               <p className="text-[12px] leading-4 font-medium text-text-foreground">Bem-vindo à Kurio</p>
-              <h1 id="mobile-hero-title" className="w-[190px] text-[18px] leading-[29px] font-bold text-text-foreground">
+              <h1 id="mobile-hero-title" className="max-w-[190px] text-[18px] leading-[29px] font-bold text-text-foreground">
                 SEJA DONO DA <span className="block">CULTURA DIGITAL</span>
               </h1>
               <p className="text-[12px] leading-[18px] text-text-secondary">

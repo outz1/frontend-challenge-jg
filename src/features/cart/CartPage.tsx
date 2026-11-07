@@ -219,12 +219,13 @@ function MobileRow({ item }: { item: CartItem }) {
       <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-0 left-0">
         <img srcSet={item.image.srcSet} sizes="100px" src={item.image.url} alt={item.image.alt} width={100} height={100} className="size-[100px] rounded-[14px] object-cover" />
       </Link>
-      <Link to="/nft/$nftId" params={{ nftId: item.nftId }} className="absolute top-[13px] left-[109px] max-w-[200px] truncate text-[15px] leading-4 font-bold text-text-foreground">
+      <Link to="/nft/$nftId" params={{ nftId: item.nftId }} title={item.title} className="absolute top-[13px] right-10 left-[109px] truncate text-[15px] leading-4 font-bold text-text-foreground">
         {item.title}
       </Link>
-      <p className="absolute top-[35px] left-[109px] text-[14px] leading-4 text-text-secondary">Edição: {item.editionLabel}</p>
+      <p className="absolute top-[35px] right-[100px] left-[109px] truncate text-[14px] leading-4 text-text-secondary">Edição: {item.editionLabel}</p>
       <p className="absolute top-[69px] left-[109px] text-[18px] leading-4 font-bold text-text-accent">{withEthUnit(item.unitPriceEth)}</p>
-      <div role="group" aria-label="Quantidade" className="absolute top-[38px] left-[261px] flex items-center">
+      {/* Ancorado à direita (12 px, como os 261 px do Figma no cartão de 358 px): não estoura com zoom ou em 320 px. */}
+      <div role="group" aria-label="Quantidade" className="absolute top-[38px] right-3 flex items-center">
         <button
           type="button"
           aria-label="Diminuir quantidade"
@@ -318,12 +319,13 @@ function QuoteRows({ quote, loading, failed, compact = false }: { quote: Quote |
           <dt>{quote.coupon ? `Desconto (${quote.coupon.code})` : 'Desconto do lançamento'}</dt>
           <dd>{discount}</dd>
         </div>
-        <div className="flex flex-col items-end">
-          <div className="flex w-full items-center justify-between">
-            <dt className="text-[15px] leading-[normal]">Taxa de rede</dt>
-            <dd className={cn('leading-4', value)}>{withEthUnit(quote.networkFeeEth)}</dd>
-          </div>
-          <p className="text-[12px] leading-4 text-text-accent">Taxa estimada</p>
+        {/* `dl > div` só pode ter `dt` e `dd`: o aviso de taxa estimada fica dentro do `dd`, embaixo do valor. */}
+        <div className="flex items-start justify-between">
+          <dt className="text-[15px] leading-[normal]">Taxa de rede</dt>
+          <dd className="flex flex-col items-end">
+            <span className={cn('leading-4', value)}>{withEthUnit(quote.networkFeeEth)}</span>
+            <span className="text-[12px] leading-4 text-text-accent">Taxa estimada</span>
+          </dd>
         </div>
         <div className="flex items-start justify-between leading-4 font-bold">
           <dt className="text-[16px]">Total</dt>

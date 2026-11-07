@@ -131,7 +131,7 @@ Os arquivos de `e2e/` cobrem as 12 áreas do §9:
 11. teclado, foco de diálogos e validação
 12. skeletons, falha e nova tentativa
 
-Mais `13-visual.spec.ts`: regressão visual de início, detalhe, carrinho e pagamento, com baselines em `e2e/13-visual.spec.ts-snapshots/`. Os testes de tempo real passam pelo cliente Socket.IO e pelos controles do mock; os de REST, pelos handlers MSW.
+Mais `13-visual.spec.ts`: regressão visual de início, detalhe, carrinho e pagamento, com baselines em `e2e/13-visual.spec.ts-snapshots/`. E `14-acessibilidade.spec.ts`: auditoria axe-core (WCAG 2.1 AA) das telas públicas e privadas, inclusive com erros de validação na tela, e ausência de overflow horizontal em 320 (zoom de 400%), 390, 768 e 1440 px (§8). Os testes de tempo real passam pelo cliente Socket.IO e pelos controles do mock; os de REST, pelos handlers MSW.
 
 Falhas guardam relatório HTML (`playwright-report/`), trace e captura de tela (`test-results/`). Para abrir um trace: `npx playwright show-trace <caminho>/trace.zip`. As baselines são regressão da implementação, não uma medição de igualdade com o Figma; veja `docs/decisoes/0008-fidelidade-visual-e-desvios.md`.
 
